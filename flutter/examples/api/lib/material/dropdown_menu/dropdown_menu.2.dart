@@ -2,7 +2,6 @@
 // Use of this source code is governed by a BSD-style license that can be
 // found in the LICENSE file.
 
-import 'package:collection/collection.dart';
 import 'package:flutter/material.dart';
 
 /// Flutter code sample for [DropdownMenu].
@@ -19,7 +18,9 @@ class DropdownMenuApp extends StatelessWidget {
     return MaterialApp(
       home: Scaffold(
         appBar: AppBar(title: const Text('DropdownMenu Sample')),
-        body: const Center(child: DropdownMenuExample()),
+        body: const Center(
+          child: DropdownMenuExample(),
+        ),
       ),
     );
   }
@@ -32,12 +33,7 @@ class DropdownMenuExample extends StatefulWidget {
   State<DropdownMenuExample> createState() => _DropdownMenuExampleState();
 }
 
-typedef MenuEntry = DropdownMenuEntry<String>;
-
 class _DropdownMenuExampleState extends State<DropdownMenuExample> {
-  static final List<MenuEntry> menuEntries = UnmodifiableListView<MenuEntry>(
-    list.map<MenuEntry>((String name) => MenuEntry(value: name, label: name)),
-  );
   String dropdownValue = list.first;
 
   @override
@@ -50,7 +46,10 @@ class _DropdownMenuExampleState extends State<DropdownMenuExample> {
           tileColor: colorScheme.primaryContainer,
           title: const Column(
             crossAxisAlignment: CrossAxisAlignment.start,
-            children: <Widget>[Text('enabled: true'), Text('requestFocusOnTap: true')],
+            children: <Widget>[
+              Text('enabled: true'),
+              Text('requestFocusOnTap: true'),
+            ],
           ),
           subtitle: Column(
             children: <Widget>[
@@ -63,7 +62,10 @@ class _DropdownMenuExampleState extends State<DropdownMenuExample> {
                     dropdownValue = value!;
                   });
                 },
-                dropdownMenuEntries: menuEntries,
+                dropdownMenuEntries:
+                    list.map<DropdownMenuEntry<String>>((String value) {
+                  return DropdownMenuEntry<String>(value: value, label: value);
+                }).toList(),
               ),
               const Text('Text cursor is shown when hovering over the DropdownMenu.'),
             ],
@@ -74,7 +76,10 @@ class _DropdownMenuExampleState extends State<DropdownMenuExample> {
           tileColor: colorScheme.primaryContainer,
           title: const Column(
             crossAxisAlignment: CrossAxisAlignment.start,
-            children: <Widget>[Text('enabled: true'), Text('requestFocusOnTap: false')],
+            children: <Widget>[
+              Text('enabled: true'),
+              Text('requestFocusOnTap: false'),
+            ],
           ),
           subtitle: Column(
             children: <Widget>[
@@ -87,7 +92,10 @@ class _DropdownMenuExampleState extends State<DropdownMenuExample> {
                     dropdownValue = value!;
                   });
                 },
-                dropdownMenuEntries: menuEntries,
+                dropdownMenuEntries:
+                    list.map<DropdownMenuEntry<String>>((String value) {
+                  return DropdownMenuEntry<String>(value: value, label: value);
+                }).toList(),
               ),
               const Text('Clickable cursor is shown when hovering over the DropdownMenu.'),
             ],
@@ -98,7 +106,10 @@ class _DropdownMenuExampleState extends State<DropdownMenuExample> {
           tileColor: colorScheme.onInverseSurface,
           title: const Column(
             crossAxisAlignment: CrossAxisAlignment.start,
-            children: <Widget>[Text('enabled: false'), Text('requestFocusOnTap: true')],
+            children: <Widget>[
+              Text('enabled: false'),
+              Text('requestFocusOnTap: true'),
+            ],
           ),
           subtitle: Column(
             children: <Widget>[
@@ -112,7 +123,10 @@ class _DropdownMenuExampleState extends State<DropdownMenuExample> {
                     dropdownValue = value!;
                   });
                 },
-                dropdownMenuEntries: menuEntries,
+                dropdownMenuEntries:
+                    list.map<DropdownMenuEntry<String>>((String value) {
+                  return DropdownMenuEntry<String>(value: value, label: value);
+                }).toList(),
               ),
               const Text('Default cursor is shown when hovering over the DropdownMenu.'),
             ],
@@ -123,7 +137,10 @@ class _DropdownMenuExampleState extends State<DropdownMenuExample> {
           tileColor: colorScheme.onInverseSurface,
           title: const Column(
             crossAxisAlignment: CrossAxisAlignment.start,
-            children: <Widget>[Text('enabled: false'), Text('requestFocusOnTap: false')],
+            children: <Widget>[
+              Text('enabled: false'),
+              Text('requestFocusOnTap: false'),
+            ],
           ),
           subtitle: Column(
             children: <Widget>[
@@ -137,7 +154,10 @@ class _DropdownMenuExampleState extends State<DropdownMenuExample> {
                     dropdownValue = value!;
                   });
                 },
-                dropdownMenuEntries: menuEntries,
+                dropdownMenuEntries:
+                    list.map<DropdownMenuEntry<String>>((String value) {
+                  return DropdownMenuEntry<String>(value: value, label: value);
+                }).toList(),
               ),
               const Text('Default cursor is shown when hovering over the DropdownMenu.'),
             ],

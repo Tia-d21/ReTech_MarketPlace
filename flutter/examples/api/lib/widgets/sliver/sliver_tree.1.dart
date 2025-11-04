@@ -14,7 +14,9 @@ class TreeSliverExampleApp extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return const MaterialApp(home: TreeSliverExample());
+    return const MaterialApp(
+      home: TreeSliverExample(),
+    );
   }
 }
 
@@ -74,7 +76,10 @@ class _TreeSliverExampleState extends State<TreeSliverExample> {
     AnimationStyle toggleAnimationStyle,
   ) {
     final bool isParentNode = node.children.isNotEmpty;
-    final BorderSide border = BorderSide(width: 2, color: Colors.purple[300]!);
+    final BorderSide border = BorderSide(
+      width: 2,
+      color: Colors.purple[300]!,
+    );
     return TreeSliver.wrapChildToToggleNode(
       node: node,
       child: Row(
@@ -83,7 +88,9 @@ class _TreeSliverExampleState extends State<TreeSliverExample> {
           SizedBox(width: 10.0 * node.depth! + 8.0),
           DecoratedBox(
             decoration: BoxDecoration(
-              border: node.parent != null ? Border(left: border, bottom: border) : null,
+              border: node.parent != null
+                  ? Border(left: border, bottom: border)
+                  : null,
             ),
             child: const SizedBox(height: 50.0, width: 20.0),
           ),
@@ -93,7 +100,10 @@ class _TreeSliverExampleState extends State<TreeSliverExample> {
               decoration: BoxDecoration(border: Border.all()),
               child: SizedBox.square(
                 dimension: 20.0,
-                child: Icon(node.isExpanded ? Icons.remove : Icons.add, size: 14),
+                child: Icon(
+                  node.isExpanded ? Icons.remove : Icons.add,
+                  size: 14,
+                ),
               ),
             ),
           // Spacer
@@ -107,7 +117,7 @@ class _TreeSliverExampleState extends State<TreeSliverExample> {
 
   Widget _getTree() {
     return DecoratedSliver(
-      decoration: BoxDecoration(border: Border.all()),
+      decoration: BoxDecoration( border: Border.all()),
       sliver: TreeSliver<String>(
         tree: tree,
         onNodeToggle: (TreeSliverNode<Object?> node) {
@@ -116,11 +126,13 @@ class _TreeSliverExampleState extends State<TreeSliverExample> {
           });
         },
         treeNodeBuilder: _treeNodeBuilder,
-        treeRowExtentBuilder:
-            (TreeSliverNode<Object?> node, SliverLayoutDimensions layoutDimensions) {
-              // This gives more space to parent nodes.
-              return node.children.isNotEmpty ? 60.0 : 50.0;
-            },
+        treeRowExtentBuilder: (
+          TreeSliverNode<Object?> node,
+          SliverLayoutDimensions layoutDimensions,
+        ) {
+          // This gives more space to parent nodes.
+          return node.children.isNotEmpty ? 60.0 : 50.0;
+        },
         // No internal indentation, the custom treeNodeBuilder applies its
         // own indentation to decorate in the indented space.
         indentation: TreeSliverIndentationType.none,
@@ -136,30 +148,42 @@ class _TreeSliverExampleState extends State<TreeSliverExample> {
     if (_selectedNode != null) {
       selectedChildren.addAll(<Widget>[
         const Spacer(),
-        Icon(_selectedNode!.children.isEmpty ? Icons.file_open_outlined : Icons.folder_outlined),
+        Icon(
+          _selectedNode!.children.isEmpty
+              ? Icons.file_open_outlined
+              : Icons.folder_outlined,
+        ),
         const SizedBox(height: 16.0),
         Text(_selectedNode!.content),
         const Spacer(),
       ]);
     }
     return Scaffold(
-      body: Row(
-        children: <Widget>[
-          SizedBox(
+      body: Row(children: <Widget>[
+        SizedBox(
+          width: screenSize.width / 2,
+          height: double.infinity,
+          child: CustomScrollView(
+            slivers: <Widget>[
+              _getTree(),
+            ],
+          ),
+        ),
+        DecoratedBox(
+          decoration: BoxDecoration(
+            border: Border.all(),
+          ),
+          child: SizedBox(
             width: screenSize.width / 2,
             height: double.infinity,
-            child: CustomScrollView(slivers: <Widget>[_getTree()]),
-          ),
-          DecoratedBox(
-            decoration: BoxDecoration(border: Border.all()),
-            child: SizedBox(
-              width: screenSize.width / 2,
-              height: double.infinity,
-              child: Center(child: Column(children: selectedChildren)),
+            child: Center(
+              child: Column(
+                children: selectedChildren,
+              ),
             ),
           ),
-        ],
-      ),
+        ),
+      ]),
     );
   }
 }

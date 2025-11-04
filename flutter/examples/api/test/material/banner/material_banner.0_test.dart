@@ -8,7 +8,9 @@ import 'package:flutter_test/flutter_test.dart';
 
 void main() {
   testWidgets('Shows all elements', (WidgetTester tester) async {
-    await tester.pumpWidget(const example.MaterialBannerExampleApp());
+    await tester.pumpWidget(
+      const example.MaterialBannerExampleApp(),
+    );
 
     expect(find.byType(MaterialBanner), findsOneWidget);
     expect(find.byType(AppBar), findsOneWidget);
@@ -21,7 +23,9 @@ void main() {
   });
 
   testWidgets('BottomNavigationBar Updates Screen Content', (WidgetTester tester) async {
-    await tester.pumpWidget(const example.MaterialBannerExampleApp());
+    await tester.pumpWidget(
+      const example.MaterialBannerExampleApp(),
+    );
 
     expect(find.byType(MaterialBanner), findsOne);
     expect(find.text('Hello, I am a Material Banner'), findsOne);
@@ -31,7 +35,9 @@ void main() {
   });
 
   testWidgets('The banner is below the text saying so', (WidgetTester tester) async {
-    await tester.pumpWidget(const example.MaterialBannerExampleApp());
+    await tester.pumpWidget(
+      const example.MaterialBannerExampleApp(),
+    );
 
     expect(find.byType(MaterialBanner), findsOneWidget);
     expect(find.text('The MaterialBanner is below'), findsOneWidget);

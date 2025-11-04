@@ -21,7 +21,9 @@ class NavigatorPopHandlerApp extends StatelessWidget {
           '/two' => MaterialPageRoute<FormData>(
             builder: (BuildContext context) => const _PageTwo(),
           ),
-          _ => MaterialPageRoute<void>(builder: (BuildContext context) => const _HomePage()),
+          _ => MaterialPageRoute<void>(
+            builder: (BuildContext context) => const _HomePage(),
+          ),
         };
       },
     );
@@ -51,7 +53,8 @@ class _HomePageState extends State<_HomePage> {
             TextButton(
               onPressed: () async {
                 final FormData formData =
-                    await Navigator.of(context).pushNamed<FormData?>('/two') ?? const FormData();
+                    await Navigator.of(context).pushNamed<FormData?>('/two')
+                        ?? const FormData();
                 if (formData != _formData) {
                   setState(() {
                     _formData = formData;
@@ -78,17 +81,23 @@ class _PopScopeWrapper extends StatelessWidget {
       builder: (BuildContext context) {
         return AlertDialog(
           title: const Text('Are you sure?'),
-          content: const Text('Are you sure you want to leave this page?'),
+          content: const Text(
+            'Are you sure you want to leave this page?',
+          ),
           actions: <Widget>[
             TextButton(
-              style: TextButton.styleFrom(textStyle: Theme.of(context).textTheme.labelLarge),
+              style: TextButton.styleFrom(
+                textStyle: Theme.of(context).textTheme.labelLarge,
+              ),
               child: const Text('Never mind'),
               onPressed: () {
                 Navigator.pop(context, false);
               },
             ),
             TextButton(
-              style: TextButton.styleFrom(textStyle: Theme.of(context).textTheme.labelLarge),
+              style: TextButton.styleFrom(
+                textStyle: Theme.of(context).textTheme.labelLarge,
+              ),
               child: const Text('Leave'),
               onPressed: () {
                 Navigator.pop(context, true);
@@ -125,8 +134,11 @@ class _PageTwo extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return const _PopScopeWrapper(child: _PageTwoBody());
+    return const _PopScopeWrapper(
+      child: _PageTwoBody(),
+    );
   }
+
 }
 
 class _PageTwoBody extends StatefulWidget {
@@ -151,15 +163,23 @@ class _PageTwoBodyState extends State<_PageTwoBody> {
               child: Column(
                 children: <Widget>[
                   TextFormField(
-                    decoration: const InputDecoration(hintText: 'Enter your name.'),
+                    decoration: const InputDecoration(
+                      hintText: 'Enter your name.',
+                    ),
                     onChanged: (String value) {
-                      _formData = _formData.copyWith(name: value);
+                      _formData = _formData.copyWith(
+                        name: value,
+                      );
                     },
                   ),
                   TextFormField(
-                    decoration: const InputDecoration(hintText: 'Enter your favorite food.'),
+                    decoration: const InputDecoration(
+                      hintText: 'Enter your favorite food.',
+                    ),
                     onChanged: (String value) {
-                      _formData = _formData.copyWith(favoriteFood: value);
+                      _formData = _formData.copyWith(
+                        favoriteFood: value,
+                      );
                     },
                   ),
                 ],
@@ -180,13 +200,19 @@ class _PageTwoBodyState extends State<_PageTwoBody> {
 
 @immutable
 class FormData {
-  const FormData({this.name = '', this.favoriteFood = ''});
+  const FormData({
+    this.name = '',
+    this.favoriteFood = '',
+  });
 
   final String name;
   final String favoriteFood;
 
   FormData copyWith({String? name, String? favoriteFood}) {
-    return FormData(name: name ?? this.name, favoriteFood: favoriteFood ?? this.favoriteFood);
+    return FormData(
+      name: name ?? this.name,
+      favoriteFood: favoriteFood ?? this.favoriteFood,
+    );
   }
 
   @override
@@ -197,7 +223,9 @@ class FormData {
     if (other.runtimeType != runtimeType) {
       return false;
     }
-    return other is FormData && other.name == name && other.favoriteFood == favoriteFood;
+    return other is FormData
+        && other.name == name
+        && other.favoriteFood == favoriteFood;
   }
 
   @override

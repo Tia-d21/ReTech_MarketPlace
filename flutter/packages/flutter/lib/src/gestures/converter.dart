@@ -59,10 +59,7 @@ abstract final class PointerEventConverter {
   /// the view a particular event occurred in to convert its data from physical
   /// coordinates to logical pixels. See the discussion at [PointerEvent] for
   /// more details on the [PointerEvent] coordinate space.
-  static Iterable<PointerEvent> expand(
-    Iterable<ui.PointerData> data,
-    DevicePixelRatioGetter devicePixelRatioForView,
-  ) {
+  static Iterable<PointerEvent> expand(Iterable<ui.PointerData> data, DevicePixelRatioGetter devicePixelRatioForView) {
     return data
         .where((ui.PointerData datum) => datum.signalKind != ui.PointerSignalKind.unknown)
         .map<PointerEvent?>((ui.PointerData datum) {
@@ -72,8 +69,7 @@ abstract final class PointerEventConverter {
             return null;
           }
           final Offset position = Offset(datum.physicalX, datum.physicalY) / devicePixelRatio;
-          final Offset delta =
-              Offset(datum.physicalDeltaX, datum.physicalDeltaY) / devicePixelRatio;
+          final Offset delta = Offset(datum.physicalDeltaX, datum.physicalDeltaY) / devicePixelRatio;
           final double radiusMinor = _toLogicalPixels(datum.radiusMinor, devicePixelRatio);
           final double radiusMajor = _toLogicalPixels(datum.radiusMajor, devicePixelRatio);
           final double radiusMin = _toLogicalPixels(datum.radiusMin, devicePixelRatio);
@@ -247,7 +243,8 @@ abstract final class PointerEventConverter {
                     synthesized: datum.synthesized,
                   );
                 case ui.PointerChange.panZoomUpdate:
-                  final Offset pan = Offset(datum.panX, datum.panY) / devicePixelRatio;
+                  final Offset pan =
+                      Offset(datum.panX, datum.panY) / devicePixelRatio;
                   final Offset panDelta =
                       Offset(datum.panDeltaX, datum.panDeltaY) / devicePixelRatio;
                   return PointerPanZoomUpdateEvent(
@@ -275,9 +272,7 @@ abstract final class PointerEventConverter {
                   );
               }
             case ui.PointerSignalKind.scroll:
-              if (!datum.scrollDeltaX.isFinite ||
-                  !datum.scrollDeltaY.isFinite ||
-                  devicePixelRatio <= 0) {
+              if (!datum.scrollDeltaX.isFinite || !datum.scrollDeltaY.isFinite || devicePixelRatio <= 0) {
                 return null;
               }
               final Offset scrollDelta =
@@ -314,10 +309,8 @@ abstract final class PointerEventConverter {
             case ui.PointerSignalKind.unknown:
               throw StateError('Unreachable');
           }
-        })
-        .whereType<PointerEvent>();
+        }).whereType<PointerEvent>();
   }
 
-  static double _toLogicalPixels(double physicalPixels, double devicePixelRatio) =>
-      physicalPixels / devicePixelRatio;
+  static double _toLogicalPixels(double physicalPixels, double devicePixelRatio) => physicalPixels / devicePixelRatio;
 }

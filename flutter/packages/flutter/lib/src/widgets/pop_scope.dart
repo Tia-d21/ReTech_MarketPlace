@@ -2,12 +2,6 @@
 // Use of this source code is governed by a BSD-style license that can be
 // found in the LICENSE file.
 
-/// @docImport 'package:flutter/cupertino.dart';
-///
-/// @docImport 'form.dart';
-/// @docImport 'navigator_pop_handler.dart';
-library;
-
 import 'package:flutter/foundation.dart';
 
 import 'framework.dart';
@@ -20,7 +14,7 @@ import 'routes.dart';
 /// Accepts a didPop boolean indicating whether or not back navigation
 /// succeeded.
 @Deprecated(
-  'Use PopInvokedWithResultCallback instead. '
+  'Use PopWithResultInvokedCallback instead. '
   'This feature was deprecated after v3.22.0-12.0.pre.',
 )
 typedef PopInvokedCallback = void Function(bool didPop);
@@ -93,10 +87,7 @@ class PopScope<T> extends StatefulWidget {
       'This feature was deprecated after v3.22.0-12.0.pre.',
     )
     this.onPopInvoked,
-  }) : assert(
-         onPopInvokedWithResult == null || onPopInvoked == null,
-         'onPopInvoked is deprecated, use onPopInvokedWithResult',
-       );
+  }) : assert(onPopInvokedWithResult == null || onPopInvoked == null, 'onPopInvoked is deprecated, use onPopInvokedWithResult');
 
   /// The widget below this widget in the tree.
   ///

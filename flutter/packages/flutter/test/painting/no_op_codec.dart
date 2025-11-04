@@ -2,9 +2,6 @@
 // Use of this source code is governed by a BSD-style license that can be
 // found in the LICENSE file.
 
-/// @docImport 'package:flutter/painting.dart';
-library;
-
 import 'dart:ui';
 
 /// Returns a [Codec] that throws on all member invocations.
@@ -17,7 +14,8 @@ Future<Codec> noOpDecoderBufferCallback(
   int? cacheWidth,
   int? cacheHeight,
   bool? allowUpscaling,
-}) async => _NoOpCodec();
+}) async =>
+    _NoOpCodec();
 
 class _NoOpCodec implements Codec {
   @override

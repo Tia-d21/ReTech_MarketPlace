@@ -19,14 +19,21 @@ class AnimatedAlignExampleApp extends StatelessWidget {
     return MaterialApp(
       home: Scaffold(
         appBar: AppBar(title: const Text('AnimatedAlign Sample')),
-        body: const AnimatedAlignExample(duration: duration, curve: curve),
+        body: const AnimatedAlignExample(
+          duration: duration,
+          curve: curve,
+        ),
       ),
     );
   }
 }
 
 class AnimatedAlignExample extends StatefulWidget {
-  const AnimatedAlignExample({required this.duration, required this.curve, super.key});
+  const AnimatedAlignExample({
+    required this.duration,
+    required this.curve,
+    super.key,
+  });
 
   final Duration duration;
 

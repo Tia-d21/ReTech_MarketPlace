@@ -3,7 +3,8 @@
 // found in the LICENSE file.
 
 import 'package:flutter/material.dart';
-import 'package:flutter_api_samples/material/banner/material_banner.1.dart' as example;
+import 'package:flutter_api_samples/material/banner/material_banner.1.dart'
+    as example;
 import 'package:flutter_test/flutter_test.dart';
 
 void main() {
@@ -22,12 +23,16 @@ void main() {
     expect(find.text('DISMISS'), findsOneWidget);
     expect(find.byIcon(Icons.agriculture_outlined), findsOneWidget);
 
-    final MaterialBanner banner = tester.widget<MaterialBanner>(find.byType(MaterialBanner));
+    final MaterialBanner banner = tester.widget<MaterialBanner>(
+      find.byType(MaterialBanner),
+    );
     expect(banner.backgroundColor, Colors.green);
   });
 
   testWidgets('BottomNavigationBar Updates Screen Content', (WidgetTester tester) async {
-    await tester.pumpWidget(const example.MaterialBannerExampleApp());
+    await tester.pumpWidget(
+      const example.MaterialBannerExampleApp(),
+    );
 
     expect(find.byType(MaterialBanner), findsNothing);
     await tester.tap(find.widgetWithText(ElevatedButton, 'Show MaterialBanner'));

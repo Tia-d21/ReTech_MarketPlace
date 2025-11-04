@@ -12,11 +12,20 @@ class CupertinoSearchTextFieldDemo extends StatefulWidget {
   const CupertinoSearchTextFieldDemo({super.key});
 
   @override
-  State<CupertinoSearchTextFieldDemo> createState() => _CupertinoSearchTextFieldDemoState();
+  State<CupertinoSearchTextFieldDemo> createState() =>
+      _CupertinoSearchTextFieldDemoState();
 }
 
-class _CupertinoSearchTextFieldDemoState extends State<CupertinoSearchTextFieldDemo> {
-  final List<String> platforms = <String>['Android', 'iOS', 'Windows', 'Linux', 'MacOS', 'Web'];
+class _CupertinoSearchTextFieldDemoState
+    extends State<CupertinoSearchTextFieldDemo> {
+  final List<String> platforms = <String>[
+    'Android',
+    'iOS',
+    'Windows',
+    'Linux',
+    'MacOS',
+    'Web'
+  ];
 
   final TextEditingController _queryTextController = TextEditingController();
   String _searchPlatform = '';
@@ -56,9 +65,15 @@ class _CupertinoSearchTextFieldDemoState extends State<CupertinoSearchTextFieldD
               restorationId: 'search_text_field',
               padding: const EdgeInsets.symmetric(horizontal: 6, vertical: 12),
               decoration: const BoxDecoration(
-                border: Border(bottom: BorderSide(width: 0, color: CupertinoColors.inactiveGray)),
+                border: Border(
+                  bottom: BorderSide(
+                    width: 0,
+                    color: CupertinoColors.inactiveGray,
+                  ),
+                ),
               ),
-              placeholder: localizations.demoCupertinoSearchTextFieldPlaceholder,
+              placeholder:
+                  localizations.demoCupertinoSearchTextFieldPlaceholder,
             ),
             _buildPlatformList(),
           ],
@@ -72,7 +87,7 @@ class _CupertinoSearchTextFieldDemoState extends State<CupertinoSearchTextFieldD
       final String search = _searchPlatform.toLowerCase();
       filteredPlatforms = <String>[
         for (final String platform in filteredPlatforms)
-          if (platform.toLowerCase().contains(search)) platform,
+          if (platform.toLowerCase().contains(search)) platform
       ];
     }
     return ListView.builder(

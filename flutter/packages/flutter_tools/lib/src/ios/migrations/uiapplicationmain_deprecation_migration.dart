@@ -6,11 +6,11 @@ import '../../base/file_system.dart';
 import '../../base/project_migrator.dart';
 import '../../xcode_project.dart';
 
-const _appDelegateFileBefore = r'''
+const String _appDelegateFileBefore = r'''
 @UIApplicationMain
 @objc class AppDelegate''';
 
-const _appDelegateFileAfter = r'''
+const String _appDelegateFileAfter = r'''
 @main
 @objc class AppDelegate''';
 
@@ -19,8 +19,10 @@ const _appDelegateFileAfter = r'''
 /// See:
 /// https://github.com/apple/swift-evolution/blob/main/proposals/0383-deprecate-uiapplicationmain-and-nsapplicationmain.md
 class UIApplicationMainDeprecationMigration extends ProjectMigrator {
-  UIApplicationMainDeprecationMigration(IosProject project, super.logger)
-    : _appDelegateSwift = project.appDelegateSwift;
+  UIApplicationMainDeprecationMigration(
+    IosProject project,
+    super.logger,
+  ) : _appDelegateSwift = project.appDelegateSwift;
 
   final File _appDelegateSwift;
 
@@ -28,7 +30,9 @@ class UIApplicationMainDeprecationMigration extends ProjectMigrator {
   Future<void> migrate() async {
     // Skip this migration if the project uses Objective-C.
     if (!_appDelegateSwift.existsSync()) {
-      logger.printTrace('ios/Runner/AppDelegate.swift not found, skipping @main migration.');
+      logger.printTrace(
+        'ios/Runner/AppDelegate.swift not found, skipping @main migration.',
+      );
       return;
     }
 

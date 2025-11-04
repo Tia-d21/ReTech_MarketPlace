@@ -39,7 +39,9 @@ class _RestorableDessertSelections extends RestorableProperty<Set<int>> {
   @override
   Set<int> fromPrimitives(Object? data) {
     final List<dynamic> selectedItemIndices = data! as List<dynamic>;
-    _dessertSelections = <int>{...selectedItemIndices.map<int>((dynamic id) => id as int)};
+    _dessertSelections = <int>{
+      ...selectedItemIndices.map<int>((dynamic id) => id as int),
+    };
     return _dessertSelections;
   }
 
@@ -53,9 +55,11 @@ class _RestorableDessertSelections extends RestorableProperty<Set<int>> {
 }
 
 class _DataTableDemoState extends State<DataTableDemo> with RestorationMixin {
-  final _RestorableDessertSelections _dessertSelections = _RestorableDessertSelections();
+  final _RestorableDessertSelections _dessertSelections =
+      _RestorableDessertSelections();
   final RestorableInt _rowIndex = RestorableInt(0);
-  final RestorableInt _rowsPerPage = RestorableInt(PaginatedDataTable.defaultRowsPerPage);
+  final RestorableInt _rowsPerPage =
+      RestorableInt(PaginatedDataTable.defaultRowsPerPage);
   final RestorableBool _sortAscending = RestorableBool(true);
   final RestorableIntN _sortColumnIndex = RestorableIntN(null);
   _DessertDataSource? _dessertsDataSource;
@@ -76,7 +80,8 @@ class _DataTableDemoState extends State<DataTableDemo> with RestorationMixin {
       case 0:
         _dessertsDataSource!._sort<String>((_Dessert d) => d.name, _sortAscending.value);
       case 1:
-        _dessertsDataSource!._sort<num>((_Dessert d) => d.calories, _sortAscending.value);
+        _dessertsDataSource!
+            ._sort<num>((_Dessert d) => d.calories, _sortAscending.value);
       case 2:
         _dessertsDataSource!._sort<num>((_Dessert d) => d.fat, _sortAscending.value);
       case 3:
@@ -105,7 +110,11 @@ class _DataTableDemoState extends State<DataTableDemo> with RestorationMixin {
     _dessertSelections.setDessertSelections(_dessertsDataSource!._desserts);
   }
 
-  void _sort<T>(Comparable<T> Function(_Dessert d) getField, int columnIndex, bool ascending) {
+  void _sort<T>(
+    Comparable<T> Function(_Dessert d) getField,
+    int columnIndex,
+    bool ascending,
+  ) {
     _dessertsDataSource!._sort<T>(getField, ascending);
     setState(() {
       _sortColumnIndex.value = columnIndex;
@@ -156,58 +165,50 @@ class _DataTableDemoState extends State<DataTableDemo> with RestorationMixin {
               columns: <DataColumn>[
                 DataColumn(
                   label: Text(localizations.dataTableColumnDessert),
-                  onSort:
-                      (int columnIndex, bool ascending) =>
-                          _sort<String>((_Dessert d) => d.name, columnIndex, ascending),
+                  onSort: (int columnIndex, bool ascending) =>
+                      _sort<String>((_Dessert d) => d.name, columnIndex, ascending),
                 ),
                 DataColumn(
                   label: Text(localizations.dataTableColumnCalories),
                   numeric: true,
-                  onSort:
-                      (int columnIndex, bool ascending) =>
-                          _sort<num>((_Dessert d) => d.calories, columnIndex, ascending),
+                  onSort: (int columnIndex, bool ascending) =>
+                      _sort<num>((_Dessert d) => d.calories, columnIndex, ascending),
                 ),
                 DataColumn(
                   label: Text(localizations.dataTableColumnFat),
                   numeric: true,
-                  onSort:
-                      (int columnIndex, bool ascending) =>
-                          _sort<num>((_Dessert d) => d.fat, columnIndex, ascending),
+                  onSort: (int columnIndex, bool ascending) =>
+                      _sort<num>((_Dessert d) => d.fat, columnIndex, ascending),
                 ),
                 DataColumn(
                   label: Text(localizations.dataTableColumnCarbs),
                   numeric: true,
-                  onSort:
-                      (int columnIndex, bool ascending) =>
-                          _sort<num>((_Dessert d) => d.carbs, columnIndex, ascending),
+                  onSort: (int columnIndex, bool ascending) =>
+                      _sort<num>((_Dessert d) => d.carbs, columnIndex, ascending),
                 ),
                 DataColumn(
                   label: Text(localizations.dataTableColumnProtein),
                   numeric: true,
-                  onSort:
-                      (int columnIndex, bool ascending) =>
-                          _sort<num>((_Dessert d) => d.protein, columnIndex, ascending),
+                  onSort: (int columnIndex, bool ascending) =>
+                      _sort<num>((_Dessert d) => d.protein, columnIndex, ascending),
                 ),
                 DataColumn(
                   label: Text(localizations.dataTableColumnSodium),
                   numeric: true,
-                  onSort:
-                      (int columnIndex, bool ascending) =>
-                          _sort<num>((_Dessert d) => d.sodium, columnIndex, ascending),
+                  onSort: (int columnIndex, bool ascending) =>
+                      _sort<num>((_Dessert d) => d.sodium, columnIndex, ascending),
                 ),
                 DataColumn(
                   label: Text(localizations.dataTableColumnCalcium),
                   numeric: true,
-                  onSort:
-                      (int columnIndex, bool ascending) =>
-                          _sort<num>((_Dessert d) => d.calcium, columnIndex, ascending),
+                  onSort: (int columnIndex, bool ascending) =>
+                      _sort<num>((_Dessert d) => d.calcium, columnIndex, ascending),
                 ),
                 DataColumn(
                   label: Text(localizations.dataTableColumnIron),
                   numeric: true,
-                  onSort:
-                      (int columnIndex, bool ascending) =>
-                          _sort<num>((_Dessert d) => d.iron, columnIndex, ascending),
+                  onSort: (int columnIndex, bool ascending) =>
+                      _sort<num>((_Dessert d) => d.iron, columnIndex, ascending),
                 ),
               ],
               source: _dessertsDataSource!,
@@ -246,18 +247,110 @@ class _DessertDataSource extends DataTableSource {
   _DessertDataSource(this.context) {
     final GalleryLocalizations localizations = GalleryLocalizations.of(context)!;
     _desserts = <_Dessert>[
-      _Dessert(localizations.dataTableRowFrozenYogurt, 159, 6.0, 24, 4.0, 87, 14, 1),
-      _Dessert(localizations.dataTableRowIceCreamSandwich, 237, 9.0, 37, 4.3, 129, 8, 1),
-      _Dessert(localizations.dataTableRowEclair, 262, 16.0, 24, 6.0, 337, 6, 7),
-      _Dessert(localizations.dataTableRowCupcake, 305, 3.7, 67, 4.3, 413, 3, 8),
-      _Dessert(localizations.dataTableRowGingerbread, 356, 16.0, 49, 3.9, 327, 7, 16),
-      _Dessert(localizations.dataTableRowJellyBean, 375, 0.0, 94, 0.0, 50, 0, 0),
-      _Dessert(localizations.dataTableRowLollipop, 392, 0.2, 98, 0.0, 38, 0, 2),
-      _Dessert(localizations.dataTableRowHoneycomb, 408, 3.2, 87, 6.5, 562, 0, 45),
-      _Dessert(localizations.dataTableRowDonut, 452, 25.0, 51, 4.9, 326, 2, 22),
-      _Dessert(localizations.dataTableRowApplePie, 518, 26.0, 65, 7.0, 54, 12, 6),
       _Dessert(
-        localizations.dataTableRowWithSugar(localizations.dataTableRowFrozenYogurt),
+        localizations.dataTableRowFrozenYogurt,
+        159,
+        6.0,
+        24,
+        4.0,
+        87,
+        14,
+        1,
+      ),
+      _Dessert(
+        localizations.dataTableRowIceCreamSandwich,
+        237,
+        9.0,
+        37,
+        4.3,
+        129,
+        8,
+        1,
+      ),
+      _Dessert(
+        localizations.dataTableRowEclair,
+        262,
+        16.0,
+        24,
+        6.0,
+        337,
+        6,
+        7,
+      ),
+      _Dessert(
+        localizations.dataTableRowCupcake,
+        305,
+        3.7,
+        67,
+        4.3,
+        413,
+        3,
+        8,
+      ),
+      _Dessert(
+        localizations.dataTableRowGingerbread,
+        356,
+        16.0,
+        49,
+        3.9,
+        327,
+        7,
+        16,
+      ),
+      _Dessert(
+        localizations.dataTableRowJellyBean,
+        375,
+        0.0,
+        94,
+        0.0,
+        50,
+        0,
+        0,
+      ),
+      _Dessert(
+        localizations.dataTableRowLollipop,
+        392,
+        0.2,
+        98,
+        0.0,
+        38,
+        0,
+        2,
+      ),
+      _Dessert(
+        localizations.dataTableRowHoneycomb,
+        408,
+        3.2,
+        87,
+        6.5,
+        562,
+        0,
+        45,
+      ),
+      _Dessert(
+        localizations.dataTableRowDonut,
+        452,
+        25.0,
+        51,
+        4.9,
+        326,
+        2,
+        22,
+      ),
+      _Dessert(
+        localizations.dataTableRowApplePie,
+        518,
+        26.0,
+        65,
+        7.0,
+        54,
+        12,
+        6,
+      ),
+      _Dessert(
+        localizations.dataTableRowWithSugar(
+          localizations.dataTableRowFrozenYogurt,
+        ),
         168,
         6.0,
         26,
@@ -267,7 +360,9 @@ class _DessertDataSource extends DataTableSource {
         1,
       ),
       _Dessert(
-        localizations.dataTableRowWithSugar(localizations.dataTableRowIceCreamSandwich),
+        localizations.dataTableRowWithSugar(
+          localizations.dataTableRowIceCreamSandwich,
+        ),
         246,
         9.0,
         39,
@@ -277,7 +372,9 @@ class _DessertDataSource extends DataTableSource {
         1,
       ),
       _Dessert(
-        localizations.dataTableRowWithSugar(localizations.dataTableRowEclair),
+        localizations.dataTableRowWithSugar(
+          localizations.dataTableRowEclair,
+        ),
         271,
         16.0,
         26,
@@ -287,7 +384,9 @@ class _DessertDataSource extends DataTableSource {
         7,
       ),
       _Dessert(
-        localizations.dataTableRowWithSugar(localizations.dataTableRowCupcake),
+        localizations.dataTableRowWithSugar(
+          localizations.dataTableRowCupcake,
+        ),
         314,
         3.7,
         69,
@@ -297,7 +396,9 @@ class _DessertDataSource extends DataTableSource {
         8,
       ),
       _Dessert(
-        localizations.dataTableRowWithSugar(localizations.dataTableRowGingerbread),
+        localizations.dataTableRowWithSugar(
+          localizations.dataTableRowGingerbread,
+        ),
         345,
         16.0,
         51,
@@ -307,7 +408,9 @@ class _DessertDataSource extends DataTableSource {
         16,
       ),
       _Dessert(
-        localizations.dataTableRowWithSugar(localizations.dataTableRowJellyBean),
+        localizations.dataTableRowWithSugar(
+          localizations.dataTableRowJellyBean,
+        ),
         364,
         0.0,
         96,
@@ -317,7 +420,9 @@ class _DessertDataSource extends DataTableSource {
         0,
       ),
       _Dessert(
-        localizations.dataTableRowWithSugar(localizations.dataTableRowLollipop),
+        localizations.dataTableRowWithSugar(
+          localizations.dataTableRowLollipop,
+        ),
         401,
         0.2,
         100,
@@ -327,7 +432,9 @@ class _DessertDataSource extends DataTableSource {
         2,
       ),
       _Dessert(
-        localizations.dataTableRowWithSugar(localizations.dataTableRowHoneycomb),
+        localizations.dataTableRowWithSugar(
+          localizations.dataTableRowHoneycomb,
+        ),
         417,
         3.2,
         89,
@@ -337,7 +444,9 @@ class _DessertDataSource extends DataTableSource {
         45,
       ),
       _Dessert(
-        localizations.dataTableRowWithSugar(localizations.dataTableRowDonut),
+        localizations.dataTableRowWithSugar(
+          localizations.dataTableRowDonut,
+        ),
         461,
         25.0,
         53,
@@ -347,7 +456,9 @@ class _DessertDataSource extends DataTableSource {
         22,
       ),
       _Dessert(
-        localizations.dataTableRowWithSugar(localizations.dataTableRowApplePie),
+        localizations.dataTableRowWithSugar(
+          localizations.dataTableRowApplePie,
+        ),
         527,
         26.0,
         67,
@@ -357,7 +468,9 @@ class _DessertDataSource extends DataTableSource {
         6,
       ),
       _Dessert(
-        localizations.dataTableRowWithHoney(localizations.dataTableRowFrozenYogurt),
+        localizations.dataTableRowWithHoney(
+          localizations.dataTableRowFrozenYogurt,
+        ),
         223,
         6.0,
         36,
@@ -367,7 +480,9 @@ class _DessertDataSource extends DataTableSource {
         1,
       ),
       _Dessert(
-        localizations.dataTableRowWithHoney(localizations.dataTableRowIceCreamSandwich),
+        localizations.dataTableRowWithHoney(
+          localizations.dataTableRowIceCreamSandwich,
+        ),
         301,
         9.0,
         49,
@@ -377,7 +492,9 @@ class _DessertDataSource extends DataTableSource {
         1,
       ),
       _Dessert(
-        localizations.dataTableRowWithHoney(localizations.dataTableRowEclair),
+        localizations.dataTableRowWithHoney(
+          localizations.dataTableRowEclair,
+        ),
         326,
         16.0,
         36,
@@ -387,7 +504,9 @@ class _DessertDataSource extends DataTableSource {
         7,
       ),
       _Dessert(
-        localizations.dataTableRowWithHoney(localizations.dataTableRowCupcake),
+        localizations.dataTableRowWithHoney(
+          localizations.dataTableRowCupcake,
+        ),
         369,
         3.7,
         79,
@@ -397,7 +516,9 @@ class _DessertDataSource extends DataTableSource {
         8,
       ),
       _Dessert(
-        localizations.dataTableRowWithHoney(localizations.dataTableRowGingerbread),
+        localizations.dataTableRowWithHoney(
+          localizations.dataTableRowGingerbread,
+        ),
         420,
         16.0,
         61,
@@ -407,7 +528,9 @@ class _DessertDataSource extends DataTableSource {
         16,
       ),
       _Dessert(
-        localizations.dataTableRowWithHoney(localizations.dataTableRowJellyBean),
+        localizations.dataTableRowWithHoney(
+          localizations.dataTableRowJellyBean,
+        ),
         439,
         0.0,
         106,
@@ -417,7 +540,9 @@ class _DessertDataSource extends DataTableSource {
         0,
       ),
       _Dessert(
-        localizations.dataTableRowWithHoney(localizations.dataTableRowLollipop),
+        localizations.dataTableRowWithHoney(
+          localizations.dataTableRowLollipop,
+        ),
         456,
         0.2,
         110,
@@ -427,7 +552,9 @@ class _DessertDataSource extends DataTableSource {
         2,
       ),
       _Dessert(
-        localizations.dataTableRowWithHoney(localizations.dataTableRowHoneycomb),
+        localizations.dataTableRowWithHoney(
+          localizations.dataTableRowHoneycomb,
+        ),
         472,
         3.2,
         99,
@@ -437,7 +564,9 @@ class _DessertDataSource extends DataTableSource {
         45,
       ),
       _Dessert(
-        localizations.dataTableRowWithHoney(localizations.dataTableRowDonut),
+        localizations.dataTableRowWithHoney(
+          localizations.dataTableRowDonut,
+        ),
         516,
         25.0,
         63,
@@ -447,7 +576,9 @@ class _DessertDataSource extends DataTableSource {
         22,
       ),
       _Dessert(
-        localizations.dataTableRowWithHoney(localizations.dataTableRowApplePie),
+        localizations.dataTableRowWithHoney(
+          localizations.dataTableRowApplePie,
+        ),
         582,
         26.0,
         77,
@@ -466,7 +597,9 @@ class _DessertDataSource extends DataTableSource {
     _desserts.sort((_Dessert a, _Dessert b) {
       final Comparable<T> aValue = getField(a);
       final Comparable<T> bValue = getField(b);
-      return ascending ? Comparable.compare(aValue, bValue) : Comparable.compare(bValue, aValue);
+      return ascending
+          ? Comparable.compare(aValue, bValue)
+          : Comparable.compare(bValue, aValue);
     });
     notifyListeners();
   }

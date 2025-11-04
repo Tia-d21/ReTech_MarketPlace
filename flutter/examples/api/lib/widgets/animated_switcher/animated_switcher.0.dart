@@ -13,7 +13,9 @@ class AnimatedSwitcherExampleApp extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return const MaterialApp(home: AnimatedSwitcherExample());
+    return const MaterialApp(
+      home: AnimatedSwitcherExample(),
+    );
   }
 }
 
@@ -21,7 +23,8 @@ class AnimatedSwitcherExample extends StatefulWidget {
   const AnimatedSwitcherExample({super.key});
 
   @override
-  State<AnimatedSwitcherExample> createState() => _AnimatedSwitcherExampleState();
+  State<AnimatedSwitcherExample> createState() =>
+      _AnimatedSwitcherExampleState();
 }
 
 class _AnimatedSwitcherExampleState extends State<AnimatedSwitcherExample> {

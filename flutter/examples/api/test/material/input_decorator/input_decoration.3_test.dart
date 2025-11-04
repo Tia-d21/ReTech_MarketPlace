@@ -8,7 +8,9 @@ import 'package:flutter_test/flutter_test.dart';
 
 void main() {
   testWidgets('TextFormField is decorated', (WidgetTester tester) async {
-    await tester.pumpWidget(const example.InputDecorationExampleApp());
+    await tester.pumpWidget(
+      const example.InputDecorationExampleApp(),
+    );
     expect(find.text('InputDecoration Sample'), findsOneWidget);
 
     expect(find.byType(TextFormField), findsOneWidget);
@@ -22,7 +24,9 @@ void main() {
   });
 
   testWidgets('Decorations are correctly ordered', (WidgetTester tester) async {
-    await tester.pumpWidget(const example.InputDecorationExampleApp());
+    await tester.pumpWidget(
+      const example.InputDecorationExampleApp(),
+    );
     expect(find.text('InputDecoration Sample'), findsOneWidget);
 
     expect(find.byType(TextFormField), findsOneWidget);

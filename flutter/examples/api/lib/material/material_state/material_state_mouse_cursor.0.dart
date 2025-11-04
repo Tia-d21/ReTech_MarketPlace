@@ -43,7 +43,10 @@ class ListTileCursor extends MaterialStateMouseCursor {
 }
 
 class MaterialStateMouseCursorExample extends StatelessWidget {
-  const MaterialStateMouseCursorExample({required this.enabled, super.key});
+  const MaterialStateMouseCursorExample({
+    required this.enabled,
+    super.key,
+  });
 
   final bool enabled;
 

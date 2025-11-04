@@ -15,7 +15,10 @@ class SnackBarExampleApp extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return const MaterialApp(home: SnackBarExample());
+    return MaterialApp(
+      theme: ThemeData(useMaterial3: true),
+      home: const SnackBarExample(),
+    );
   }
 }
 
@@ -110,10 +113,11 @@ class _SnackBarExampleState extends State<SnackBarExample> {
                 onChanged: !_withAction
                     ? null
                     : (bool value) => setState(() {
-                        _longActionLabel = value;
-                      }),
+                  _longActionLabel = value;
+                }),
               ),
             ],
+
           ),
           ExpansionTile(
             title: const Text('Action new-line overflow threshold'),
@@ -130,7 +134,7 @@ class _SnackBarExampleState extends State<SnackBarExample> {
             ],
           ),
           // Avoid hiding content behind the floating action button
-          const SizedBox(height: 100),
+          const SizedBox(height: 100,),
         ],
       ),
     );
@@ -145,11 +149,13 @@ class _SnackBarExampleState extends State<SnackBarExample> {
             },
           )
         : null;
-    final double? width = _snackBarBehavior == SnackBarBehavior.floating ? 400.0 : null;
+    final double? width = _snackBarBehavior == SnackBarBehavior.floating
+        ? 400.0
+        : null;
     final String label = _multiLine
         ? 'A Snack Bar with quite a lot of text which spans across multiple '
-              'lines. You can look at how the Action Label moves around when trying '
-              'to layout this text.'
+        'lines. You can look at how the Action Label moves around when trying '
+        'to layout this text.'
         : 'Single Line Snack Bar';
     return SnackBar(
       content: Text(label),

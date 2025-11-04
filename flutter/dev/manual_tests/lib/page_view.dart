@@ -33,20 +33,13 @@ class PageViewAppState extends State<PageViewApp> {
     ];
 
     cardModels = List<CardModel>.generate(cardSizes.length, (int i) {
-      final Color? color = Color.lerp(
-        Colors.red.shade300,
-        Colors.blue.shade900,
-        i / cardSizes.length,
-      );
+      final Color? color = Color.lerp(Colors.red.shade300, Colors.blue.shade900, i / cardSizes.length);
       return CardModel(i, cardSizes[i], color!);
     });
   }
 
-  static const TextStyle cardLabelStyle = TextStyle(
-    color: Colors.white,
-    fontSize: 18.0,
-    fontWeight: FontWeight.bold,
-  );
+  static const TextStyle cardLabelStyle =
+    TextStyle(color: Colors.white, fontSize: 18.0, fontWeight: FontWeight.bold);
 
   List<CardModel> cardModels = <CardModel>[];
   Size pageSize = const Size(200.0, 200.0);
@@ -65,8 +58,8 @@ class PageViewAppState extends State<PageViewApp> {
     );
 
     final BoxConstraints constraints = (scrollDirection == Axis.vertical)
-        ? BoxConstraints.tightFor(height: pageSize.height)
-        : BoxConstraints.tightFor(width: pageSize.width);
+      ? BoxConstraints.tightFor(height: pageSize.height)
+      : BoxConstraints.tightFor(width: pageSize.width);
 
     return Container(
       key: cardModel.key,
@@ -116,7 +109,10 @@ class PageViewAppState extends State<PageViewApp> {
   }
 
   AppBar _buildAppBar() {
-    return AppBar(title: const Text('PageView'), actions: <Widget>[Text(scrollDirection.name)]);
+    return AppBar(
+      title: const Text('PageView'),
+      actions: <Widget>[Text(scrollDirection.name)],
+    );
   }
 
   Widget _buildBody(BuildContext context) {
@@ -131,11 +127,20 @@ class PageViewAppState extends State<PageViewApp> {
   Widget build(BuildContext context) {
     return IconTheme(
       data: const IconThemeData(color: Colors.white),
-      child: Scaffold(appBar: _buildAppBar(), drawer: _buildDrawer(), body: _buildBody(context)),
+      child: Scaffold(
+        appBar: _buildAppBar(),
+        drawer: _buildDrawer(),
+        body: _buildBody(context),
+      ),
     );
   }
 }
 
 void main() {
-  runApp(const MaterialApp(title: 'PageView', home: PageViewApp()));
+  runApp(
+    const MaterialApp(
+      title: 'PageView',
+      home: PageViewApp(),
+    ),
+  );
 }

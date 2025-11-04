@@ -17,13 +17,12 @@ void main() async {
   } else {
     output = '--- TEST SUCCEEDED ---';
   }
-  await web.window
-      .fetch(
-          '/test-result'.toJS,
-          web.RequestInit(
-            method: 'POST',
-            body: output.toJS,
-          ))
-      .toDart;
+  await web.window.fetch(
+    '/test-result'.toJS,
+    web.RequestInit(
+      method: 'POST',
+      body: output.toJS,
+    )
+  ).toDart;
   print(output);
 }

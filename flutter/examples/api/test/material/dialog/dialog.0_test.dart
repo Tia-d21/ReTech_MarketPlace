@@ -9,7 +9,9 @@ void main() {
   testWidgets('Show Dialog', (WidgetTester tester) async {
     const String dialogText = 'This is a typical dialog.';
 
-    await tester.pumpWidget(const example.DialogExampleApp());
+    await tester.pumpWidget(
+      const example.DialogExampleApp(),
+    );
 
     expect(find.text(dialogText), findsNothing);
 
@@ -25,7 +27,9 @@ void main() {
   testWidgets('Show Dialog.fullscreen', (WidgetTester tester) async {
     const String dialogText = 'This is a fullscreen dialog.';
 
-    await tester.pumpWidget(const example.DialogExampleApp());
+    await tester.pumpWidget(
+      const example.DialogExampleApp(),
+    );
 
     expect(find.text(dialogText), findsNothing);
 

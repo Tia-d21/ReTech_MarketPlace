@@ -62,7 +62,8 @@ class MainActivity : FragmentActivity() {
                 .add(
                     12345 + i,
                     flutterFragment
-                ).commit()
+                )
+                .commit()
         }
     }
 

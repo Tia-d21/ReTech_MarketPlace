@@ -13,7 +13,7 @@ import 'package:test/fake.dart';
 
 import '../../src/common.dart';
 
-void main() {
+void main () {
   group('CMake project migration', () {
     group('migrate add_custom_command() to use VERBATIM', () {
       late MemoryFileSystem memoryFileSystem;
@@ -34,23 +34,26 @@ void main() {
       });
 
       testWithoutContext('skipped if files are missing', () async {
-        final cmakeProjectMigration = CmakeCustomCommandMigration(mockCmakeProject, testLogger);
+        final CmakeCustomCommandMigration cmakeProjectMigration = CmakeCustomCommandMigration(
+          mockCmakeProject,
+          testLogger,
+        );
         await cmakeProjectMigration.migrate();
         expect(managedCmakeFile.existsSync(), isFalse);
 
-        expect(
-          testLogger.traceText,
-          contains('CMake project not found, skipping add_custom_command() VERBATIM migration'),
-        );
+        expect(testLogger.traceText, contains('CMake project not found, skipping add_custom_command() VERBATIM migration'));
         expect(testLogger.statusText, isEmpty);
       });
 
       testWithoutContext('skipped if nothing to migrate', () async {
-        const contents = 'Nothing to migrate';
+        const String contents = 'Nothing to migrate';
         managedCmakeFile.writeAsStringSync(contents);
         final DateTime projectLastModified = managedCmakeFile.lastModifiedSync();
 
-        final cmakeProjectMigration = CmakeCustomCommandMigration(mockCmakeProject, testLogger);
+        final CmakeCustomCommandMigration cmakeProjectMigration = CmakeCustomCommandMigration(
+          mockCmakeProject,
+          testLogger,
+        );
         await cmakeProjectMigration.migrate();
 
         expect(managedCmakeFile.lastModifiedSync(), projectLastModified);
@@ -60,7 +63,7 @@ void main() {
       });
 
       testWithoutContext('skipped if already migrated', () async {
-        const contents = r'''
+        const String contents = r'''
 add_custom_command(
   OUTPUT ${FLUTTER_LIBRARY} ${FLUTTER_LIBRARY_HEADERS}
     ${CMAKE_CURRENT_BINARY_DIR}/_phony_
@@ -74,7 +77,10 @@ add_custom_command(
         managedCmakeFile.writeAsStringSync(contents);
         final DateTime projectLastModified = managedCmakeFile.lastModifiedSync();
 
-        final cmakeProjectMigration = CmakeCustomCommandMigration(mockCmakeProject, testLogger);
+        final CmakeCustomCommandMigration cmakeProjectMigration = CmakeCustomCommandMigration(
+          mockCmakeProject,
+          testLogger,
+        );
         await cmakeProjectMigration.migrate();
 
         expect(managedCmakeFile.lastModifiedSync(), projectLastModified);
@@ -95,7 +101,10 @@ add_custom_command(
 )
 ''');
 
-        final cmakeProjectMigration = CmakeCustomCommandMigration(mockCmakeProject, testLogger);
+        final CmakeCustomCommandMigration cmakeProjectMigration = CmakeCustomCommandMigration(
+          mockCmakeProject,
+          testLogger,
+        );
         await cmakeProjectMigration.migrate();
 
         expect(managedCmakeFile.readAsStringSync(), r'''
@@ -110,10 +119,7 @@ add_custom_command(
 )
 ''');
 
-        expect(
-          testLogger.statusText,
-          contains('add_custom_command() missing VERBATIM or FLUTTER_TARGET_PLATFORM, updating.'),
-        );
+        expect(testLogger.statusText, contains('add_custom_command() missing VERBATIM or FLUTTER_TARGET_PLATFORM, updating.'));
       });
 
       testWithoutContext('is migrated to use FLUTTER_TARGET_PLATFORM', () async {
@@ -129,7 +135,10 @@ add_custom_command(
 )
 ''');
 
-        final cmakeProjectMigration = CmakeCustomCommandMigration(mockCmakeProject, testLogger);
+        final CmakeCustomCommandMigration cmakeProjectMigration = CmakeCustomCommandMigration(
+          mockCmakeProject,
+          testLogger,
+        );
         await cmakeProjectMigration.migrate();
 
         expect(managedCmakeFile.readAsStringSync(), r'''
@@ -144,10 +153,7 @@ add_custom_command(
 )
 ''');
 
-        expect(
-          testLogger.statusText,
-          contains('add_custom_command() missing VERBATIM or FLUTTER_TARGET_PLATFORM, updating.'),
-        );
+        expect(testLogger.statusText, contains('add_custom_command() missing VERBATIM or FLUTTER_TARGET_PLATFORM, updating.'));
       });
     });
 
@@ -170,7 +176,7 @@ add_custom_command(
       });
 
       testWithoutContext('skipped if files are missing', () async {
-        final cmakeProjectMigration = CmakeNativeAssetsMigration(
+        final CmakeNativeAssetsMigration cmakeProjectMigration = CmakeNativeAssetsMigration(
           mockCmakeProject,
           'linux',
           testLogger,
@@ -178,19 +184,16 @@ add_custom_command(
         await cmakeProjectMigration.migrate();
         expect(managedCmakeFile.existsSync(), isFalse);
 
-        expect(
-          testLogger.traceText,
-          contains('CMake project not found, skipping install() NATIVE_ASSETS_DIR migration.'),
-        );
+        expect(testLogger.traceText, contains('CMake project not found, skipping install() NATIVE_ASSETS_DIR migration.'));
         expect(testLogger.statusText, isEmpty);
       });
 
       testWithoutContext('skipped if nothing to migrate', () async {
-        const contents = 'Nothing to migrate';
+        const String contents = 'Nothing to migrate';
         managedCmakeFile.writeAsStringSync(contents);
         final DateTime projectLastModified = managedCmakeFile.lastModifiedSync();
 
-        final cmakeProjectMigration = CmakeNativeAssetsMigration(
+        final CmakeNativeAssetsMigration cmakeProjectMigration = CmakeNativeAssetsMigration(
           mockCmakeProject,
           'linux',
           testLogger,
@@ -204,7 +207,7 @@ add_custom_command(
       });
 
       testWithoutContext('skipped if already migrated', () async {
-        const contents = r'''
+        const String contents = r'''
 # Copy the native assets provided by the build.dart from all packages.
 set(NATIVE_ASSETS_DIR "${PROJECT_BUILD_DIR}native_assets/linux/")
 install(DIRECTORY "${NATIVE_ASSETS_DIR}"
@@ -214,7 +217,7 @@ install(DIRECTORY "${NATIVE_ASSETS_DIR}"
         managedCmakeFile.writeAsStringSync(contents);
         final DateTime projectLastModified = managedCmakeFile.lastModifiedSync();
 
-        final cmakeProjectMigration = CmakeNativeAssetsMigration(
+        final CmakeNativeAssetsMigration cmakeProjectMigration = CmakeNativeAssetsMigration(
           mockCmakeProject,
           'linux',
           testLogger,
@@ -227,7 +230,7 @@ install(DIRECTORY "${NATIVE_ASSETS_DIR}"
         expect(testLogger.statusText, isEmpty);
       });
 
-      for (final os in <String>['linux', 'windows']) {
+      for (final String os in <String>['linux', 'windows']) {
         testWithoutContext('is migrated to copy native assets', () async {
           managedCmakeFile.writeAsStringSync(r'''
 foreach(bundled_library ${PLUGIN_BUNDLED_LIBRARIES})
@@ -246,7 +249,7 @@ install(DIRECTORY "${PROJECT_BUILD_DIR}/${FLUTTER_ASSET_DIR_NAME}"
   DESTINATION "${INSTALL_BUNDLE_DATA_DIR}" COMPONENT Runtime)
 ''');
 
-          final cmakeProjectMigration = CmakeNativeAssetsMigration(
+          final CmakeNativeAssetsMigration cmakeProjectMigration = CmakeNativeAssetsMigration(
             mockCmakeProject,
             os,
             testLogger,
@@ -276,10 +279,8 @@ install(DIRECTORY "\${PROJECT_BUILD_DIR}/\${FLUTTER_ASSET_DIR_NAME}"
   DESTINATION "\${INSTALL_BUNDLE_DATA_DIR}" COMPONENT Runtime)
 ''');
 
-          expect(
-            testLogger.statusText,
-            contains('CMake missing install() NATIVE_ASSETS_DIR command, updating.'),
-          );
+          expect(testLogger.statusText,
+              contains('CMake missing install() NATIVE_ASSETS_DIR command, updating.'));
         });
       }
     });

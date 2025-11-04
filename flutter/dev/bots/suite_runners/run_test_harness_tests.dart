@@ -2,7 +2,7 @@
 // Use of this source code is governed by a BSD-style license that can be
 // found in the LICENSE file.
 
-import 'dart:io' show File, Platform;
+import 'dart:io' show  File, Platform;
 
 import 'package:path/path.dart' as path;
 
@@ -19,12 +19,11 @@ String get platformFolderName {
   if (Platform.isLinux) {
     return 'linux-x64';
   }
-  throw UnsupportedError(
-    'The platform ${Platform.operatingSystem} is not supported by this script.',
-  );
+  throw UnsupportedError('The platform ${Platform.operatingSystem} is not supported by this script.');
 }
 
 Future<void> testHarnessTestsRunner() async {
+
   printProgress('${green}Running test harness tests...$reset');
 
   await _validateEngineHash();
@@ -56,10 +55,10 @@ Future<void> testHarnessTestsRunner() async {
       printOutput: false,
       outputChecker: (CommandResult result) {
         return result.flattenedStdout!.contains('failingPendingTimerTest')
-            ? null
-            : 'Failed to find the stack trace for the pending Timer.\n\n'
-                  'stdout:\n${result.flattenedStdout}\n\n'
-                  'stderr:\n${result.flattenedStderr}';
+          ? null
+          : 'Failed to find the stack trace for the pending Timer.\n\n'
+            'stdout:\n${result.flattenedStdout}\n\n'
+            'stderr:\n${result.flattenedStderr}';
       },
     ),
     () => runFlutterTest(
@@ -68,17 +67,16 @@ Future<void> testHarnessTestsRunner() async {
       expectFailure: true,
       printOutput: false,
       outputChecker: (CommandResult result) {
-        const String expectedError =
-            '══╡ EXCEPTION CAUGHT BY FLUTTER TEST FRAMEWORK ╞════════════════════════════════════════════════════\n'
+        const String expectedError = '══╡ EXCEPTION CAUGHT BY FLUTTER TEST FRAMEWORK ╞════════════════════════════════════════════════════\n'
             'The following StateError was thrown running a test (but after the test had completed):\n'
             'Bad state: Exception thrown after test completed.';
         if (result.flattenedStdout!.contains(expectedError)) {
           return null;
         }
         return 'Failed to find expected output on stdout.\n\n'
-            'Expected output:\n$expectedError\n\n'
-            'Actual stdout:\n${result.flattenedStdout}\n\n'
-            'Actual stderr:\n${result.flattenedStderr}';
+          'Expected output:\n$expectedError\n\n'
+          'Actual stdout:\n${result.flattenedStdout}\n\n'
+          'Actual stderr:\n${result.flattenedStderr}';
       },
     ),
     () => runFlutterTest(
@@ -133,19 +131,11 @@ Future<void> testHarnessTestsRunner() async {
   }
 }
 
-/// Verify the Flutter Engine is the revision in `bin/cache/engine.stamp`.
+/// Verify the Flutter Engine is the revision in
+/// bin/cache/internal/engine.version.
 Future<void> _validateEngineHash() async {
-  final String flutterTester = path.join(
-    flutterRoot,
-    'bin',
-    'cache',
-    'artifacts',
-    'engine',
-    platformFolderName,
-    'flutter_tester$exe',
-  );
+  final String flutterTester = path.join(flutterRoot, 'bin', 'cache', 'artifacts', 'engine', platformFolderName, 'flutter_tester$exe');
 
-  // TODO(matanlurey): Revisit with the Dart team if this is true now that they use FLUTTER_PREBUILT_ENGINE_VERSION=...
   if (runningInDartHHHBot) {
     // The Dart HHH bots intentionally modify the local artifact cache
     // and then use this script to run Flutter's test suites.
@@ -155,9 +145,7 @@ Future<void> _validateEngineHash() async {
     return;
   }
   final String expectedVersion = File(engineVersionFile).readAsStringSync().trim();
-  final CommandResult result = await runCommand(flutterTester, <String>[
-    '--help',
-  ], outputMode: OutputMode.capture);
+  final CommandResult result = await runCommand(flutterTester, <String>['--help'], outputMode: OutputMode.capture);
   if (result.flattenedStdout!.isNotEmpty) {
     foundError(<String>[
       '${red}The stdout of `$flutterTester --help` was not empty:$reset',
@@ -177,8 +165,6 @@ Future<void> _validateEngineHash() async {
     return;
   }
   if (!actualVersion.contains(expectedVersion)) {
-    foundError(<String>[
-      '${red}Expected "Flutter Engine Version: $expectedVersion", but found "$actualVersion".$reset',
-    ]);
+    foundError(<String>['${red}Expected "Flutter Engine Version: $expectedVersion", but found "$actualVersion".$reset']);
   }
 }

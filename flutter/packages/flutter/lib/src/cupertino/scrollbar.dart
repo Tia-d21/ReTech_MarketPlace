@@ -84,7 +84,6 @@ class CupertinoScrollbar extends RawScrollbar {
     this.radiusWhileDragging = defaultRadiusWhileDragging,
     ScrollNotificationPredicate? notificationPredicate,
     super.scrollbarOrientation,
-    super.mainAxisMargin = _kScrollbarMainAxisMargin,
   }) : assert(thickness < double.infinity),
        assert(thicknessWhileDragging < double.infinity),
        super(
@@ -132,16 +131,11 @@ class _CupertinoScrollbarState extends RawScrollbarState<CupertinoScrollbar> {
   late AnimationController _thicknessAnimationController;
 
   double get _thickness {
-    return widget.thickness! +
-        _thicknessAnimationController.value * (widget.thicknessWhileDragging - widget.thickness!);
+    return widget.thickness! + _thicknessAnimationController.value * (widget.thicknessWhileDragging - widget.thickness!);
   }
 
   Radius get _radius {
-    return Radius.lerp(
-      widget.radius,
-      widget.radiusWhileDragging,
-      _thicknessAnimationController.value,
-    )!;
+    return Radius.lerp(widget.radius, widget.radiusWhileDragging, _thicknessAnimationController.value)!;
   }
 
   @override
@@ -162,7 +156,7 @@ class _CupertinoScrollbarState extends RawScrollbarState<CupertinoScrollbar> {
       ..color = CupertinoDynamicColor.resolve(_kScrollbarColor, context)
       ..textDirection = Directionality.of(context)
       ..thickness = _thickness
-      ..mainAxisMargin = widget.mainAxisMargin
+      ..mainAxisMargin = _kScrollbarMainAxisMargin
       ..crossAxisMargin = _kScrollbarCrossAxisMargin
       ..radius = _radius
       ..padding = MediaQuery.paddingOf(context)
@@ -184,7 +178,7 @@ class _CupertinoScrollbarState extends RawScrollbarState<CupertinoScrollbar> {
       return;
     }
     _pressStartAxisPosition = switch (direction) {
-      Axis.vertical => localPosition.dy,
+      Axis.vertical   => localPosition.dy,
       Axis.horizontal => localPosition.dx,
     };
   }
@@ -195,7 +189,9 @@ class _CupertinoScrollbarState extends RawScrollbarState<CupertinoScrollbar> {
       return;
     }
     super.handleThumbPress();
-    _thicknessAnimationController.forward().then<void>((_) => HapticFeedback.mediumImpact());
+    _thicknessAnimationController.forward().then<void>(
+          (_) => HapticFeedback.mediumImpact(),
+    );
   }
 
   @override
@@ -208,18 +204,10 @@ class _CupertinoScrollbarState extends RawScrollbarState<CupertinoScrollbar> {
     super.handleThumbPressEnd(localPosition, velocity);
     final (double axisPosition, double axisVelocity) = switch (direction) {
       Axis.horizontal => (localPosition.dx, velocity.pixelsPerSecond.dx),
-      Axis.vertical => (localPosition.dy, velocity.pixelsPerSecond.dy),
+      Axis.vertical   => (localPosition.dy, velocity.pixelsPerSecond.dy),
     };
     if (axisPosition != _pressStartAxisPosition && axisVelocity.abs() < 10) {
       HapticFeedback.mediumImpact();
-    }
-  }
-
-  @override
-  void handleTrackTapDown(TapDownDetails details) {
-    // On iOS, tapping the track does not page towards the position of the tap.
-    if (ScrollConfiguration.of(context).getPlatform(context) != TargetPlatform.iOS) {
-      super.handleTrackTapDown(details);
     }
   }
 

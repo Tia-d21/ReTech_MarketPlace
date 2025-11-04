@@ -31,7 +31,8 @@ class ShrineApp extends StatefulWidget {
   State<ShrineApp> createState() => _ShrineAppState();
 }
 
-class _ShrineAppState extends State<ShrineApp> with TickerProviderStateMixin, RestorationMixin {
+class _ShrineAppState extends State<ShrineApp>
+    with TickerProviderStateMixin, RestorationMixin {
   // Controller to coordinate both the opening/closing of backdrop and sliding
   // of expanding bottom sheet
   late AnimationController _controller;
@@ -51,7 +52,10 @@ class _ShrineAppState extends State<ShrineApp> with TickerProviderStateMixin, Re
   void restoreState(RestorationBucket? oldBucket, bool initialRestore) {
     registerForRestoration(_model, 'app_state_model');
     registerForRestoration(_tabIndex, 'tab_index');
-    registerForRestoration(_expandingTabIndex, 'expanding_tab_index');
+    registerForRestoration(
+      _expandingTabIndex,
+      'expanding_tab_index',
+    );
     _controller.value = _tabIndex.value;
     _expandingController.value = _expandingTabIndex.value;
   }
@@ -104,7 +108,10 @@ class _ShrineAppState extends State<ShrineApp> with TickerProviderStateMixin, Re
   }
 
   Widget desktopBackdrop() {
-    return const DesktopBackdrop(frontLayer: ProductPage(), backLayer: CategoryMenuPage());
+    return const DesktopBackdrop(
+      frontLayer: ProductPage(),
+      backLayer: CategoryMenuPage(),
+    );
   }
 
   // Closes the bottom sheet if it is open.
@@ -125,15 +132,16 @@ class _ShrineAppState extends State<ShrineApp> with TickerProviderStateMixin, Re
         menuController: _controller,
         cartController: _expandingController,
         child: LayoutBuilder(
-          builder:
-              (BuildContext context, BoxConstraints constraints) => HomePage(
-                backdrop: isDisplayDesktop(context) ? desktopBackdrop() : mobileBackdrop(),
-                scrim: Scrim(controller: _expandingController),
-                expandingBottomSheet: ExpandingBottomSheet(
-                  hideController: _controller,
-                  expandingController: _expandingController,
-                ),
-              ),
+          builder: (BuildContext context, BoxConstraints constraints) => HomePage(
+            backdrop: isDisplayDesktop(context)
+                ? desktopBackdrop()
+                : mobileBackdrop(),
+            scrim: Scrim(controller: _expandingController),
+            expandingBottomSheet: ExpandingBottomSheet(
+              hideController: _controller,
+              expandingController: _expandingController,
+            ),
+          ),
         ),
       ),
     );
@@ -148,7 +156,8 @@ class _ShrineAppState extends State<ShrineApp> with TickerProviderStateMixin, Re
           // ScrollBehavior. This overrides that. All vertical scrollables in
           // the gallery need to be audited before enabling this feature,
           // see https://github.com/flutter/gallery/issues/541
-          scrollBehavior: const MaterialScrollBehavior().copyWith(scrollbars: false),
+          scrollBehavior:
+              const MaterialScrollBehavior().copyWith(scrollbars: false),
           restorationScopeId: 'shrineApp',
           title: 'Shrine',
           debugShowCheckedModeBanner: false,
@@ -157,7 +166,9 @@ class _ShrineAppState extends State<ShrineApp> with TickerProviderStateMixin, Re
             ShrineApp.loginRoute: (BuildContext context) => const LoginPage(),
             ShrineApp.homeRoute: (BuildContext context) => home,
           },
-          theme: shrineTheme.copyWith(platform: GalleryOptions.of(context).platform),
+          theme: shrineTheme.copyWith(
+            platform: GalleryOptions.of(context).platform,
+          ),
           // L10n settings.
           localizationsDelegates: GalleryLocalizations.localizationsDelegates,
           supportedLocales: GalleryLocalizations.supportedLocales,

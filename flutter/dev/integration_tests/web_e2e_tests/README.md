@@ -22,10 +22,12 @@ Here's an example of running an integration test:
 flutter drive --target=test_driver/text_editing_integration.dart \
   -d web-server \
   --browser-name=chrome \
-  --profile
+  --profile \
+  --web-renderer=html
 ```
 
-This example runs the test in profile mode (`--profile`).
+This example runs the test in profile mode (`--profile`) using the HTML
+renderer (`--web-renderer=html`).
 
 More resources:
 

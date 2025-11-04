@@ -21,12 +21,13 @@ class _PageApiExampleAppState extends State<PageApiExampleApp> {
 
   @override
   Widget build(BuildContext context) {
-    return MaterialApp.router(routerDelegate: delegate);
+    return MaterialApp.router(
+      routerDelegate: delegate,
+    );
   }
 }
 
-class MyRouterDelegate extends RouterDelegate<Object>
-    with PopNavigatorRouterDelegateMixin<Object>, ChangeNotifier {
+class MyRouterDelegate extends RouterDelegate<Object> with PopNavigatorRouterDelegateMixin<Object>, ChangeNotifier {
   // This example doesn't use RouteInformationProvider.
   @override
   Future<void> setNewRoutePath(Object configuration) async => throw UnimplementedError();
@@ -34,8 +35,7 @@ class MyRouterDelegate extends RouterDelegate<Object>
   @override
   final GlobalKey<NavigatorState> navigatorKey = GlobalKey<NavigatorState>();
 
-  static MyRouterDelegate of(BuildContext context) =>
-      Router.of(context).routerDelegate as MyRouterDelegate;
+  static MyRouterDelegate of(BuildContext context) => Router.of(context).routerDelegate as MyRouterDelegate;
 
   bool get showDetailPage => _showDetailPage;
   bool _showDetailPage = false;
@@ -49,29 +49,28 @@ class MyRouterDelegate extends RouterDelegate<Object>
 
   Future<bool> _showConfirmDialog() async {
     return await showDialog<bool>(
-          context: navigatorKey.currentContext!,
-          barrierDismissible: false,
-          builder: (BuildContext context) {
-            return AlertDialog(
-              title: const Text('Are you sure?'),
-              actions: <Widget>[
-                TextButton(
-                  child: const Text('Cancel'),
-                  onPressed: () {
-                    Navigator.of(context).pop(false);
-                  },
-                ),
-                TextButton(
-                  child: const Text('Confirm'),
-                  onPressed: () {
-                    Navigator.of(context).pop(true);
-                  },
-                ),
-              ],
-            );
-          },
-        ) ??
-        false;
+      context: navigatorKey.currentContext!,
+      barrierDismissible: false,
+      builder: (BuildContext context) {
+        return AlertDialog(
+          title: const Text('Are you sure?'),
+          actions: <Widget>[
+            TextButton(
+              child: const Text('Cancel'),
+              onPressed: () {
+                Navigator.of(context).pop(false);
+              },
+            ),
+            TextButton(
+              child: const Text('Confirm'),
+              onPressed: () {
+                Navigator.of(context).pop(true);
+              },
+            ),
+          ],
+        );
+      },
+    ) ?? false;
   }
 
   Future<void> _handlePopDetails(bool didPop, void result) async {
@@ -119,6 +118,7 @@ class _HomePage extends StatefulWidget {
 }
 
 class _HomePageState extends State<_HomePage> {
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(

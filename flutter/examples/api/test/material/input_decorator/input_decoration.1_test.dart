@@ -8,7 +8,9 @@ import 'package:flutter_test/flutter_test.dart';
 
 void main() {
   testWidgets('TextField is decorated', (WidgetTester tester) async {
-    await tester.pumpWidget(const example.InputDecorationExampleApp());
+    await tester.pumpWidget(
+      const example.InputDecorationExampleApp(),
+    );
     expect(find.text('InputDecoration Sample'), findsOneWidget);
 
     expect(find.byType(TextField), findsOneWidget);

@@ -11,7 +11,9 @@ import 'package:flutter_test/flutter_test.dart';
 
 void main() {
   testWidgets('Animates icon size on first build', (WidgetTester tester) async {
-    await tester.pumpWidget(const example.TweenAnimationBuilderExampleApp());
+    await tester.pumpWidget(
+      const example.TweenAnimationBuilderExampleApp(),
+    );
 
     // The animation duration defined in the example app.
     const Duration animationDuration = Duration(seconds: 1);
@@ -28,7 +30,10 @@ void main() {
     await tester.pump(animationDuration ~/ 2);
 
     iconButton = tester.widget(iconButtonFinder);
-    expect(iconButton.iconSize, equals(lerpDouble(beginSize, endSize, 0.5)));
+    expect(
+      iconButton.iconSize,
+      equals(lerpDouble(beginSize, endSize, 0.5)),
+    );
 
     // Advance animation to the end.
     await tester.pump(animationDuration ~/ 2);
@@ -38,7 +43,9 @@ void main() {
   });
 
   testWidgets('Animates icon size on IconButton tap', (WidgetTester tester) async {
-    await tester.pumpWidget(const example.TweenAnimationBuilderExampleApp());
+    await tester.pumpWidget(
+      const example.TweenAnimationBuilderExampleApp(),
+    );
     await tester.pumpAndSettle();
 
     // The animation duration defined in the example app.
@@ -63,7 +70,10 @@ void main() {
     await tester.pump(animationDuration ~/ 2);
 
     iconButton = tester.widget(iconButtonFinder);
-    expect(iconButton.iconSize, equals(lerpDouble(beginSize, endSize, 0.5)));
+    expect(
+      iconButton.iconSize,
+      equals(lerpDouble(beginSize, endSize, 0.5)),
+    );
 
     // Advance animation to the end.
     await tester.pump(animationDuration ~/ 2);
@@ -82,7 +92,10 @@ void main() {
     await tester.pump(animationDuration ~/ 2);
 
     iconButton = tester.widget(iconButtonFinder);
-    expect(iconButton.iconSize, equals(lerpDouble(endSize, beginSize, 0.5)));
+    expect(
+      iconButton.iconSize,
+      equals(lerpDouble(endSize, beginSize, 0.5)),
+    );
 
     // Advance animation to the end.
     await tester.pump(animationDuration ~/ 2);
@@ -92,7 +105,9 @@ void main() {
   });
 
   testWidgets('Animation target can be updated during the animation', (WidgetTester tester) async {
-    await tester.pumpWidget(const example.TweenAnimationBuilderExampleApp());
+    await tester.pumpWidget(
+      const example.TweenAnimationBuilderExampleApp(),
+    );
     await tester.pumpAndSettle();
 
     // The animation duration defined in the example app.
@@ -131,7 +146,10 @@ void main() {
     await tester.pump(animationDuration ~/ 2);
 
     iconButton = tester.widget(iconButtonFinder);
-    expect(iconButton.iconSize, equals(lerpDouble(middleSize, beginSize, 0.5)));
+    expect(
+      iconButton.iconSize,
+      equals(lerpDouble(middleSize, beginSize, 0.5)),
+    );
 
     // Advance animation to the end.
     await tester.pump(animationDuration ~/ 2);

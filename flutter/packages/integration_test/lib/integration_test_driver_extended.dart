@@ -31,7 +31,10 @@ Future<void> writeResponseData(
 }) async {
   destinationDirectory ??= testOutputsDirectory;
   await fs.directory(destinationDirectory).create(recursive: true);
-  final File file = fs.file(path.join(destinationDirectory, '$testOutputFilename.json'));
+  final File file = fs.file(path.join(
+    destinationDirectory,
+    '$testOutputFilename.json',
+  ));
   final String resultString = _encodeJson(data, true);
   await file.writeAsString(resultString);
 }
@@ -101,21 +104,22 @@ Future<void> integrationDriver({
       // Use `driver.screenshot()` method to get a screenshot of the web page.
       final List<int> screenshotImage = await driver.screenshot();
       final String screenshotName = response.data!['screenshot_name']! as String;
-      final Map<String, Object?>? args = (response.data!['args'] as Map<String, Object?>?)
-          ?.cast<String, Object?>();
+      final Map<String, Object?>? args = (response.data!['args'] as Map<String, Object?>?)?.cast<String, Object?>();
 
       final bool screenshotSuccess = await onScreenshot!(screenshotName, screenshotImage, args);
       onScreenshotResults[screenshotName] = screenshotSuccess;
       if (screenshotSuccess) {
         jsonResponse = await driver.requestData(DriverTestMessage.complete().toString());
       } else {
-        jsonResponse = await driver.requestData(DriverTestMessage.error().toString());
+        jsonResponse =
+            await driver.requestData(DriverTestMessage.error().toString());
       }
 
       response = Response.fromJson(jsonResponse);
     } else if (webDriverCommand == '${WebDriverCommandType.ack}') {
       // Previous command completed ask for a new one.
-      jsonResponse = await driver.requestData(DriverTestMessage.pending().toString());
+      jsonResponse =
+          await driver.requestData(DriverTestMessage.pending().toString());
 
       response = Response.fromJson(jsonResponse);
     } else {
@@ -143,8 +147,7 @@ Future<void> integrationDriver({
 
       bool ok = false;
       try {
-        ok =
-            onScreenshotResults[screenshotName] ??
+        ok = onScreenshotResults[screenshotName] ??
             await onScreenshot(screenshotName, screenshotBytes.cast<int>());
       } catch (exception) {
         throw StateError(
@@ -157,7 +160,7 @@ Future<void> integrationDriver({
       }
     }
     if (failures.isNotEmpty) {
-      throw StateError('The following screenshot tests failed: ${failures.join(', ')}');
+     throw StateError('The following screenshot tests failed: ${failures.join(', ')}');
     }
   }
 

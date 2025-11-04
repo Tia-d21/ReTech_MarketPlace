@@ -2,11 +2,6 @@
 // Use of this source code is governed by a BSD-style license that can be
 // found in the LICENSE file.
 
-/// @docImport 'app_bar.dart';
-/// @docImport 'scaffold.dart';
-/// @docImport 'tabs.dart';
-library;
-
 import 'dart:math' as math;
 
 import 'package:flutter/foundation.dart';
@@ -138,10 +133,11 @@ class TabController extends ChangeNotifier {
        _previousIndex = previousIndex,
        _animationController = animationController,
        _animationDuration = animationDuration {
-    if (kFlutterMemoryAllocationsEnabled) {
-      ChangeNotifier.maybeDispatchObjectCreation(this);
+      if (kFlutterMemoryAllocationsEnabled) {
+        ChangeNotifier.maybeDispatchObjectCreation(this);
+      }
     }
-  }
+
 
   /// Creates a new [TabController] with `index`, `previousIndex`, `length`, and
   /// `animationDuration` if they are non-null, and disposes current instance.
@@ -198,7 +194,7 @@ class TabController extends ChangeNotifier {
   /// [TabBarView.children]'s length.
   final int length;
 
-  void _changeIndex(int value, {Duration? duration, Curve? curve}) {
+  void _changeIndex(int value, { Duration? duration, Curve? curve }) {
     assert(value >= 0 && (value < length || length == 0));
     assert(duration != null || curve == null);
     assert(_indexIsChangingCount >= 0);
@@ -211,14 +207,13 @@ class TabController extends ChangeNotifier {
       _indexIsChangingCount += 1;
       notifyListeners(); // Because the value of indexIsChanging may have changed.
       _animationController!
-          .animateTo(_index.toDouble(), duration: duration, curve: curve!)
-          .whenCompleteOrCancel(() {
-            if (_animationController != null) {
-              // don't notify if we've been disposed
-              _indexIsChangingCount -= 1;
-              notifyListeners();
-            }
-          });
+        .animateTo(_index.toDouble(), duration: duration, curve: curve!)
+        .whenCompleteOrCancel(() {
+          if (_animationController != null) { // don't notify if we've been disposed
+            _indexIsChangingCount -= 1;
+            notifyListeners();
+          }
+        });
     } else {
       _indexIsChangingCount += 1;
       _animationController!.value = _index.toDouble();
@@ -262,7 +257,7 @@ class TabController extends ChangeNotifier {
   ///
   /// While the animation is running [indexIsChanging] is true. When the
   /// animation completes [offset] will be 0.0.
-  void animateTo(int value, {Duration? duration, Curve curve = Curves.ease}) {
+  void animateTo(int value, { Duration? duration, Curve curve = Curves.ease }) {
     _changeIndex(value, duration: duration ?? _animationDuration, curve: curve);
   }
 
@@ -458,8 +453,7 @@ class DefaultTabController extends StatefulWidget {
   State<DefaultTabController> createState() => _DefaultTabControllerState();
 }
 
-class _DefaultTabControllerState extends State<DefaultTabController>
-    with SingleTickerProviderStateMixin {
+class _DefaultTabControllerState extends State<DefaultTabController> with SingleTickerProviderStateMixin {
   late TabController _controller;
 
   @override

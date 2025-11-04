@@ -49,8 +49,11 @@ abstract class SemanticsEvent {
   ///
   /// [nodeId] is the unique identifier of the semantics node associated with
   /// the event, or null if the event is not associated with a semantics node.
-  Map<String, dynamic> toMap({int? nodeId}) {
-    final Map<String, dynamic> event = <String, dynamic>{'type': type, 'data': getDataMap()};
+  Map<String, dynamic> toMap({ int? nodeId }) {
+    final Map<String, dynamic> event = <String, dynamic>{
+      'type': type,
+      'data': getDataMap(),
+    };
     if (nodeId != null) {
       event['nodeId'] = nodeId;
     }
@@ -83,22 +86,11 @@ abstract class SemanticsEvent {
 ///
 /// When possible, prefer using mechanisms like [Semantics] to implicitly
 /// trigger announcements over using this event.
-///
-/// ### Android
-/// Android has [deprecated announcement events][1] due to its disruptive
-/// behavior with TalkBack forcing it to clear its speech queue and speak the
-/// provided text. Instead, use mechanisms like [Semantics] to implicitly
-/// trigger announcements.
-///
-/// [1]: https://developer.android.com/reference/android/view/View#announceForAccessibility(java.lang.CharSequence)
-///
 class AnnounceSemanticsEvent extends SemanticsEvent {
+
   /// Constructs an event that triggers an announcement by the platform.
-  const AnnounceSemanticsEvent(
-    this.message,
-    this.textDirection, {
-    this.assertiveness = Assertiveness.polite,
-  }) : super('announce');
+  const AnnounceSemanticsEvent(this.message, this.textDirection, {this.assertiveness = Assertiveness.polite})
+    : super('announce');
 
   /// The message to announce.
   final String message;
@@ -116,10 +108,11 @@ class AnnounceSemanticsEvent extends SemanticsEvent {
 
   @override
   Map<String, dynamic> getDataMap() {
-    return <String, dynamic>{
+    return <String, dynamic> {
       'message': message,
       'textDirection': textDirection.index,
-      if (assertiveness != Assertiveness.polite) 'assertiveness': assertiveness.index,
+      if (assertiveness != Assertiveness.polite)
+        'assertiveness': assertiveness.index,
     };
   }
 }
@@ -136,7 +129,9 @@ class TooltipSemanticsEvent extends SemanticsEvent {
 
   @override
   Map<String, dynamic> getDataMap() {
-    return <String, dynamic>{'message': message};
+    return <String, dynamic>{
+      'message': message,
+    };
   }
 }
 

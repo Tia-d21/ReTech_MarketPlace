@@ -15,7 +15,9 @@ class RestorableValueExampleApp extends StatelessWidget {
   Widget build(BuildContext context) {
     return MaterialApp(
       home: Scaffold(
-        appBar: AppBar(title: const Text('RestorableValue Sample')),
+        appBar: AppBar(
+          title: const Text('RestorableValue Sample'),
+        ),
         body: const RestorableValueExample(restorationId: 'main'),
       ),
     );
@@ -70,7 +72,10 @@ class _RestorableValueExampleState extends State<RestorableValueExample> with Re
   @override
   Widget build(BuildContext context) {
     return Center(
-      child: OutlinedButton(onPressed: _incrementAnswer, child: Text('${_answer.value}')),
+      child: OutlinedButton(
+        onPressed: _incrementAnswer,
+        child: Text('${_answer.value}'),
+      ),
     );
   }
 }

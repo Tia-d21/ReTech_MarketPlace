@@ -9,7 +9,7 @@ import 'package:flutter/material.dart';
 import 'package:video_player/video_player.dart';
 
 class VideoCard extends StatelessWidget {
-  const VideoCard({super.key, this.controller, this.title, this.subtitle});
+  const VideoCard({ super.key, this.controller, this.title, this.subtitle });
 
   final VideoPlayerController? controller;
   final String? title;
@@ -21,7 +21,10 @@ class VideoCard extends StatelessWidget {
       child: Center(
         child: AspectRatio(
           aspectRatio: 3 / 2,
-          child: Hero(tag: controller!, child: VideoPlayerLoading(controller)),
+          child: Hero(
+            tag: controller!,
+            child: VideoPlayerLoading(controller),
+          ),
         ),
       ),
     );
@@ -29,11 +32,16 @@ class VideoCard extends StatelessWidget {
 
   Widget _buildFullScreenVideo() {
     return Scaffold(
-      appBar: AppBar(title: Text(title!)),
+      appBar: AppBar(
+        title: Text(title!),
+      ),
       body: Center(
         child: AspectRatio(
           aspectRatio: 3 / 2,
-          child: Hero(tag: controller!, child: VideoPlayPause(controller)),
+          child: Hero(
+            tag: controller!,
+            child: VideoPlayPause(controller),
+          ),
         ),
       ),
     );
@@ -70,7 +78,10 @@ class VideoCard extends StatelessWidget {
         child: Column(
           children: <Widget>[
             ListTile(title: Text(title!), subtitle: Text(subtitle!)),
-            GestureDetector(onTap: pushFullScreenWidget, child: _buildInlineVideo()),
+            GestureDetector(
+              onTap: pushFullScreenWidget,
+              child: _buildInlineVideo(),
+            ),
           ],
         ),
       ),
@@ -135,7 +146,7 @@ class _VideoPlayPauseState extends State<VideoPlayPause> {
   _VideoPlayPauseState() {
     listener = () {
       if (mounted) {
-        setState(() {});
+        setState(() { });
       }
     };
   }
@@ -170,10 +181,14 @@ class _VideoPlayPauseState extends State<VideoPlayPause> {
               return;
             }
             if (controller!.value.isPlaying) {
-              imageFadeAnimation = const FadeAnimation(child: Icon(Icons.pause, size: 100.0));
+              imageFadeAnimation = const FadeAnimation(
+                child: Icon(Icons.pause, size: 100.0),
+              );
               controller!.pause();
             } else {
-              imageFadeAnimation = const FadeAnimation(child: Icon(Icons.play_arrow, size: 100.0));
+              imageFadeAnimation = const FadeAnimation(
+                child: Icon(Icons.play_arrow, size: 100.0),
+              );
               controller!.play();
             }
           },
@@ -185,7 +200,11 @@ class _VideoPlayPauseState extends State<VideoPlayPause> {
 }
 
 class FadeAnimation extends StatefulWidget {
-  const FadeAnimation({super.key, this.child, this.duration = const Duration(milliseconds: 500)});
+  const FadeAnimation({
+    super.key,
+    this.child,
+    this.duration = const Duration(milliseconds: 500),
+  });
 
   final Widget? child;
   final Duration duration;
@@ -200,10 +219,13 @@ class _FadeAnimationState extends State<FadeAnimation> with SingleTickerProvider
   @override
   void initState() {
     super.initState();
-    animationController = AnimationController(duration: widget.duration, vsync: this);
+    animationController = AnimationController(
+      duration: widget.duration,
+      vsync: this,
+    );
     animationController.addListener(() {
       if (mounted) {
-        setState(() {});
+        setState(() { });
       }
     });
     animationController.forward(from: 0.0);
@@ -232,13 +254,16 @@ class _FadeAnimationState extends State<FadeAnimation> with SingleTickerProvider
   @override
   Widget build(BuildContext context) {
     return animationController.isAnimating
-        ? Opacity(opacity: 1.0 - animationController.value, child: widget.child)
+        ? Opacity(
+            opacity: 1.0 - animationController.value,
+            child: widget.child,
+          )
         : Container();
   }
 }
 
 class VideoDemo extends StatefulWidget {
-  const VideoDemo({super.key});
+  const VideoDemo({ super.key });
 
   static const String routeName = '/video';
 
@@ -277,7 +302,7 @@ class _VideoDemoState extends State<VideoDemo> with SingleTickerProviderStateMix
       controller.play();
       await controller.initialize();
       if (mounted) {
-        setState(() {});
+        setState(() { });
       }
     }
 
@@ -287,7 +312,7 @@ class _VideoDemoState extends State<VideoDemo> with SingleTickerProviderStateMix
 
   @override
   void dispose() {
-    isDisposed = true;
+    isDisposed  = true;
     butterflyController.dispose();
     beeController.dispose();
     super.dispose();
@@ -296,7 +321,9 @@ class _VideoDemoState extends State<VideoDemo> with SingleTickerProviderStateMix
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(title: const Text('Videos')),
+      appBar: AppBar(
+        title: const Text('Videos'),
+      ),
       body: isSupported
           ? Scrollbar(
               child: ListView(
@@ -307,7 +334,11 @@ class _VideoDemoState extends State<VideoDemo> with SingleTickerProviderStateMix
                     subtitle: '… flutters by',
                     controller: butterflyController,
                   ),
-                  VideoCard(title: 'Bee', subtitle: '… gently buzzing', controller: beeController),
+                  VideoCard(
+                    title: 'Bee',
+                    subtitle: '… gently buzzing',
+                    controller: beeController,
+                  ),
                 ],
               ),
             )

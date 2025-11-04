@@ -21,9 +21,11 @@ void main() {
     );
     int semanticsUpdateCount = 0;
     final SemanticsHandle semanticsHandle = TestRenderingFlutterBinding.instance.ensureSemantics();
-    TestRenderingFlutterBinding.instance.pipelineOwner.semanticsOwner!.addListener(() {
-      ++semanticsUpdateCount;
-    });
+    TestRenderingFlutterBinding.instance.pipelineOwner.semanticsOwner!.addListener(
+      () {
+        ++semanticsUpdateCount;
+      },
+    );
 
     layout(tree, phase: EnginePhase.flushSemantics);
 

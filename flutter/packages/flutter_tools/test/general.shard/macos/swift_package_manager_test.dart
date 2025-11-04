@@ -2,10 +2,9 @@
 // Use of this source code is governed by a BSD-style license that can be
 // found in the LICENSE file.
 
+
 import 'package:file/file.dart';
 import 'package:file/memory.dart';
-import 'package:file_testing/file_testing.dart';
-import 'package:flutter_tools/src/darwin/darwin.dart';
 import 'package:flutter_tools/src/isolated/mustache_template.dart';
 import 'package:flutter_tools/src/macos/swift_package_manager.dart';
 import 'package:flutter_tools/src/platform_plugins.dart';
@@ -15,48 +14,82 @@ import 'package:test/fake.dart';
 
 import '../../src/common.dart';
 
-const _doubleIndent = '        ';
+const String _doubleIndent = '        ';
 
 void main() {
-  const supportedPlatforms = <FlutterDarwinPlatform>[
-    FlutterDarwinPlatform.ios,
-    FlutterDarwinPlatform.macos,
+  const List<SupportedPlatform> supportedPlatforms = <SupportedPlatform>[
+    SupportedPlatform.ios,
+    SupportedPlatform.macos,
   ];
 
   group('SwiftPackageManager', () {
-    for (final platform in supportedPlatforms) {
+    for (final SupportedPlatform platform in supportedPlatforms) {
       group('for ${platform.name}', () {
-        group('generatePluginsSwiftPackage', () {
-          testWithoutContext('skip if no dependencies and not already migrated', () async {
-            final fs = MemoryFileSystem();
-            final project = FakeXcodeProject(platform: platform.name, fileSystem: fs);
 
-            final spm = SwiftPackageManager(
+        group('generatePluginsSwiftPackage', () {
+          testWithoutContext('throw if invalid platform', () async {
+            final MemoryFileSystem fs = MemoryFileSystem();
+            final FakeXcodeProject project = FakeXcodeProject(
+              platform: platform.name,
+              fileSystem: fs,
+            );
+
+            final SwiftPackageManager spm = SwiftPackageManager(
               fileSystem: fs,
               templateRenderer: const MustacheTemplateRenderer(),
             );
-            await spm.generatePluginsSwiftPackage(<Plugin>[], platform, project);
+
+            await expectLater(() => spm.generatePluginsSwiftPackage(
+                <Plugin>[],
+                SupportedPlatform.android,
+                project,
+              ),
+              throwsToolExit(message: 'The platform android is not compatible with Swift Package Manager. Only iOS and macOS are allowed.'),
+            );
+          });
+
+          testWithoutContext('skip if no dependencies and not already migrated', () async {
+            final MemoryFileSystem fs = MemoryFileSystem();
+            final FakeXcodeProject project = FakeXcodeProject(
+              platform: platform.name,
+              fileSystem: fs,
+            );
+
+            final SwiftPackageManager spm = SwiftPackageManager(
+              fileSystem: fs,
+              templateRenderer: const MustacheTemplateRenderer(),
+            );
+            await spm.generatePluginsSwiftPackage(
+              <Plugin>[],
+              platform,
+              project,
+            );
 
             expect(project.flutterPluginSwiftPackageManifest.existsSync(), isFalse);
           });
 
           testWithoutContext('generate if no dependencies and already migrated', () async {
-            final fs = MemoryFileSystem();
-            final project = FakeXcodeProject(platform: platform.name, fileSystem: fs);
+            final MemoryFileSystem fs = MemoryFileSystem();
+            final FakeXcodeProject project = FakeXcodeProject(
+              platform: platform.name,
+              fileSystem: fs,
+            );
             project.xcodeProjectInfoFile.createSync(recursive: true);
             project.xcodeProjectInfoFile.writeAsStringSync('''
 '		78A318202AECB46A00862997 /* FlutterGeneratedPluginSwiftPackage in Frameworks */ = {isa = PBXBuildFile; productRef = 78A3181F2AECB46A00862997 /* FlutterGeneratedPluginSwiftPackage */; };';
 ''');
 
-            final spm = SwiftPackageManager(
+            final SwiftPackageManager spm = SwiftPackageManager(
               fileSystem: fs,
               templateRenderer: const MustacheTemplateRenderer(),
             );
-            await spm.generatePluginsSwiftPackage(<Plugin>[], platform, project);
+            await spm.generatePluginsSwiftPackage(
+              <Plugin>[],
+              platform,
+              project,
+            );
 
-            final supportedPlatform = platform == FlutterDarwinPlatform.ios
-                ? '.iOS("13.0")'
-                : '.macOS("10.15")';
+            final String supportedPlatform = platform == SupportedPlatform.ios ? '.iOS("12.0")' : '.macOS("10.14")';
             expect(project.flutterPluginSwiftPackageManifest.existsSync(), isTrue);
             expect(project.flutterPluginSwiftPackageManifest.readAsStringSync(), '''
 // swift-tools-version: 5.9
@@ -88,34 +121,30 @@ $_doubleIndent
           });
 
           testWithoutContext('generate with single dependency', () async {
-            final fs = MemoryFileSystem();
-            final project = FakeXcodeProject(platform: platform.name, fileSystem: fs);
-
-            final Directory validPlugin1Directory = fs.directory(
-              '/local/path/to/plugins/valid_plugin_1',
+            final MemoryFileSystem fs = MemoryFileSystem();
+            final FakeXcodeProject project = FakeXcodeProject(
+              platform: platform.name,
+              fileSystem: fs,
             );
-            validPlugin1Directory.childFile('Package.swift').createSync(recursive: true);
 
-            final validPlugin1 = FakePlugin(
+            final File validPlugin1Manifest = fs.file('/local/path/to/plugins/valid_plugin_1/Package.swift')..createSync(recursive: true);
+            final FakePlugin validPlugin1 = FakePlugin(
               name: 'valid_plugin_1',
               platforms: <String, PluginPlatform>{platform.name: FakePluginPlatform()},
-              pluginSwiftPackagePath: validPlugin1Directory.path,
+              pluginSwiftPackageManifestPath: validPlugin1Manifest.path,
             );
-            final spm = SwiftPackageManager(
+            final SwiftPackageManager spm = SwiftPackageManager(
               fileSystem: fs,
               templateRenderer: const MustacheTemplateRenderer(),
             );
-            await spm.generatePluginsSwiftPackage(<Plugin>[validPlugin1], platform, project);
-
-            final supportedPlatform = platform == FlutterDarwinPlatform.ios
-                ? '.iOS("13.0")'
-                : '.macOS("10.15")';
-            expect(project.flutterPluginSwiftPackageManifest.existsSync(), isTrue);
-            expect(project.relativeSwiftPackagesDirectory.childLink('valid_plugin_1'), exists);
-            expect(
-              project.relativeSwiftPackagesDirectory.childLink('valid_plugin_1').targetSync(),
-              validPlugin1Directory.path,
+            await spm.generatePluginsSwiftPackage(
+              <Plugin>[validPlugin1],
+              platform,
+              project,
             );
+
+            final String supportedPlatform = platform == SupportedPlatform.ios ? '.iOS("12.0")' : '.macOS("10.14")';
+            expect(project.flutterPluginSwiftPackageManifest.existsSync(), isTrue);
             expect(project.flutterPluginSwiftPackageManifest.readAsStringSync(), '''
 // swift-tools-version: 5.9
 // The swift-tools-version declares the minimum version of Swift required to build this package.
@@ -134,7 +163,7 @@ let package = Package(
         .library(name: "FlutterGeneratedPluginSwiftPackage", type: .static, targets: ["FlutterGeneratedPluginSwiftPackage"])
     ],
     dependencies: [
-        .package(name: "valid_plugin_1", path: "../.packages/valid_plugin_1")
+        .package(name: "valid_plugin_1", path: "/local/path/to/plugins/valid_plugin_1")
     ],
     targets: [
         .target(
@@ -149,46 +178,41 @@ let package = Package(
           });
 
           testWithoutContext('generate with multiple dependencies', () async {
-            final fs = MemoryFileSystem();
-            final project = FakeXcodeProject(platform: platform.name, fileSystem: fs);
-            final nonPlatformCompatiblePlugin = FakePlugin(
+            final MemoryFileSystem fs = MemoryFileSystem();
+            final FakeXcodeProject project = FakeXcodeProject(
+              platform: platform.name,
+              fileSystem: fs,
+            );
+            final FakePlugin nonPlatformCompatiblePlugin = FakePlugin(
               name: 'invalid_plugin_due_to_incompatible_platform',
               platforms: <String, PluginPlatform>{},
-              pluginSwiftPackagePath: '/some/path',
+              pluginSwiftPackageManifestPath: '/some/path',
             );
-            final pluginSwiftPackageManifestIsNull = FakePlugin(
+            final FakePlugin pluginSwiftPackageManifestIsNull = FakePlugin(
               name: 'invalid_plugin_due_to_null_plugin_swift_package_path',
               platforms: <String, PluginPlatform>{platform.name: FakePluginPlatform()},
-              pluginSwiftPackagePath: null,
+              pluginSwiftPackageManifestPath: null,
             );
-            final pluginSwiftPackageManifestNotExists = FakePlugin(
+            final FakePlugin pluginSwiftPackageManifestNotExists = FakePlugin(
               name: 'invalid_plugin_due_to_plugin_swift_package_path_does_not_exist',
               platforms: <String, PluginPlatform>{platform.name: FakePluginPlatform()},
-              pluginSwiftPackagePath: '/some/path',
+              pluginSwiftPackageManifestPath: '/some/path',
             );
 
-            final Directory validPlugin1Directory = fs.directory(
-              '/local/path/to/plugins/valid_plugin_1',
-            );
-            validPlugin1Directory.childFile('Package.swift').createSync(recursive: true);
-            final validPlugin1 = FakePlugin(
+            final File validPlugin1Manifest = fs.file('/local/path/to/plugins/valid_plugin_1/Package.swift')..createSync(recursive: true);
+            final FakePlugin validPlugin1 = FakePlugin(
               name: 'valid_plugin_1',
               platforms: <String, PluginPlatform>{platform.name: FakePluginPlatform()},
-              pluginSwiftPackagePath: validPlugin1Directory.path,
+              pluginSwiftPackageManifestPath: validPlugin1Manifest.path,
             );
-
-            final Directory validPlugin2Directory = fs.directory(
-              '/.pub-cache/plugins/valid_plugin_2',
-            );
-            validPlugin2Directory.childFile('Package.swift').createSync(recursive: true);
-
-            final validPlugin2 = FakePlugin(
+            final File validPlugin2Manifest = fs.file('/.pub-cache/plugins/valid_plugin_2/Package.swift')..createSync(recursive: true);
+            final FakePlugin validPlugin2 = FakePlugin(
               name: 'valid_plugin_2',
               platforms: <String, PluginPlatform>{platform.name: FakePluginPlatform()},
-              pluginSwiftPackagePath: validPlugin2Directory.path,
+              pluginSwiftPackageManifestPath: validPlugin2Manifest.path,
             );
 
-            final spm = SwiftPackageManager(
+            final SwiftPackageManager spm = SwiftPackageManager(
               fileSystem: fs,
               templateRenderer: const MustacheTemplateRenderer(),
             );
@@ -204,20 +228,10 @@ let package = Package(
               project,
             );
 
-            final supportedPlatform = platform == FlutterDarwinPlatform.ios
-                ? '.iOS("13.0")'
-                : '.macOS("10.15")';
+            final String supportedPlatform = platform == SupportedPlatform.ios
+                ? '.iOS("12.0")'
+                : '.macOS("10.14")';
             expect(project.flutterPluginSwiftPackageManifest.existsSync(), isTrue);
-            expect(project.relativeSwiftPackagesDirectory.childLink('valid_plugin_1'), exists);
-            expect(
-              project.relativeSwiftPackagesDirectory.childLink('valid_plugin_1').targetSync(),
-              validPlugin1Directory.path,
-            );
-            expect(project.relativeSwiftPackagesDirectory.childLink('valid_plugin_2'), exists);
-            expect(
-              project.relativeSwiftPackagesDirectory.childLink('valid_plugin_2').targetSync(),
-              validPlugin2Directory.path,
-            );
             expect(project.flutterPluginSwiftPackageManifest.readAsStringSync(), '''
 // swift-tools-version: 5.9
 // The swift-tools-version declares the minimum version of Swift required to build this package.
@@ -236,8 +250,8 @@ let package = Package(
         .library(name: "FlutterGeneratedPluginSwiftPackage", type: .static, targets: ["FlutterGeneratedPluginSwiftPackage"])
     ],
     dependencies: [
-        .package(name: "valid_plugin_1", path: "../.packages/valid_plugin_1"),
-        .package(name: "valid_plugin_2", path: "../.packages/valid_plugin_2")
+        .package(name: "valid_plugin_1", path: "/local/path/to/plugins/valid_plugin_1"),
+        .package(name: "valid_plugin_2", path: "/.pub-cache/plugins/valid_plugin_2")
     ],
     targets: [
         .target(
@@ -255,11 +269,12 @@ let package = Package(
 
         group('updateMinimumDeployment', () {
           testWithoutContext('return if invalid deploymentTarget', () {
-            final fs = MemoryFileSystem();
-            final project = FakeXcodeProject(platform: platform.name, fileSystem: fs);
-            final supportedPlatform = platform == FlutterDarwinPlatform.ios
-                ? '.iOS("13.0")'
-                : '.macOS("10.15")';
+            final MemoryFileSystem fs = MemoryFileSystem();
+            final FakeXcodeProject project = FakeXcodeProject(
+              platform: platform.name,
+              fileSystem: fs,
+            );
+            final String supportedPlatform = platform == SupportedPlatform.ios ? '.iOS("12.0")' : '.macOS("10.14")';
             project.flutterPluginSwiftPackageManifest.createSync(recursive: true);
             project.flutterPluginSwiftPackageManifest.writeAsStringSync(supportedPlatform);
             SwiftPackageManager.updateMinimumDeployment(
@@ -274,11 +289,12 @@ let package = Package(
           });
 
           testWithoutContext('return if deploymentTarget is lower than default', () {
-            final fs = MemoryFileSystem();
-            final project = FakeXcodeProject(platform: platform.name, fileSystem: fs);
-            final supportedPlatform = platform == FlutterDarwinPlatform.ios
-                ? '.iOS("13.0")'
-                : '.macOS("10.15")';
+            final MemoryFileSystem fs = MemoryFileSystem();
+            final FakeXcodeProject project = FakeXcodeProject(
+              platform: platform.name,
+              fileSystem: fs,
+            );
+            final String supportedPlatform = platform == SupportedPlatform.ios ? '.iOS("12.0")' : '.macOS("10.14")';
             project.flutterPluginSwiftPackageManifest.createSync(recursive: true);
             project.flutterPluginSwiftPackageManifest.writeAsStringSync(supportedPlatform);
             SwiftPackageManager.updateMinimumDeployment(
@@ -293,17 +309,18 @@ let package = Package(
           });
 
           testWithoutContext('return if deploymentTarget is same than default', () {
-            final fs = MemoryFileSystem();
-            final project = FakeXcodeProject(platform: platform.name, fileSystem: fs);
-            final supportedPlatform = platform == FlutterDarwinPlatform.ios
-                ? '.iOS("13.0")'
-                : '.macOS("10.15")';
+            final MemoryFileSystem fs = MemoryFileSystem();
+            final FakeXcodeProject project = FakeXcodeProject(
+              platform: platform.name,
+              fileSystem: fs,
+            );
+            final String supportedPlatform = platform == SupportedPlatform.ios ? '.iOS("12.0")' : '.macOS("10.14")';
             project.flutterPluginSwiftPackageManifest.createSync(recursive: true);
             project.flutterPluginSwiftPackageManifest.writeAsStringSync(supportedPlatform);
             SwiftPackageManager.updateMinimumDeployment(
               project: project,
               platform: platform,
-              deploymentTarget: platform == FlutterDarwinPlatform.ios ? '13.0' : '10.15',
+              deploymentTarget: platform == SupportedPlatform.ios ? '12.0' : '10.14',
             );
             expect(
               project.flutterPluginSwiftPackageManifest.readAsLinesSync(),
@@ -312,11 +329,12 @@ let package = Package(
           });
 
           testWithoutContext('update if deploymentTarget is higher than default', () {
-            final fs = MemoryFileSystem();
-            final project = FakeXcodeProject(platform: platform.name, fileSystem: fs);
-            final supportedPlatform = platform == FlutterDarwinPlatform.ios
-                ? '.iOS("13.0")'
-                : '.macOS("10.15")';
+            final MemoryFileSystem fs = MemoryFileSystem();
+            final FakeXcodeProject project = FakeXcodeProject(
+              platform: platform.name,
+              fileSystem: fs,
+            );
+            final String supportedPlatform = platform == SupportedPlatform.ios ? '.iOS("12.0")' : '.macOS("10.14")';
             project.flutterPluginSwiftPackageManifest.createSync(recursive: true);
             project.flutterPluginSwiftPackageManifest.writeAsStringSync(supportedPlatform);
             SwiftPackageManager.updateMinimumDeployment(
@@ -325,14 +343,14 @@ let package = Package(
               deploymentTarget: '14.0',
             );
             expect(
-              project.flutterPluginSwiftPackageManifest.readAsLinesSync().contains(
-                supportedPlatform,
-              ),
+              project.flutterPluginSwiftPackageManifest
+                  .readAsLinesSync()
+                  .contains(supportedPlatform),
               isFalse,
             );
             expect(
               project.flutterPluginSwiftPackageManifest.readAsLinesSync(),
-              contains(platform == FlutterDarwinPlatform.ios ? '.iOS("14.0")' : '.macOS("14.0")'),
+              contains(platform == SupportedPlatform.ios ? '.iOS("14.0")' : '.macOS("14.0")'),
             );
           });
         });
@@ -342,8 +360,10 @@ let package = Package(
 }
 
 class FakeXcodeProject extends Fake implements IosProject {
-  FakeXcodeProject({required MemoryFileSystem fileSystem, required String platform})
-    : hostAppRoot = fileSystem.directory('app_name').childDirectory(platform);
+  FakeXcodeProject({
+    required MemoryFileSystem fileSystem,
+    required String platform,
+  }) : hostAppRoot = fileSystem.directory('app_name').childDirectory(platform);
 
   @override
   Directory hostAppRoot;
@@ -355,19 +375,14 @@ class FakeXcodeProject extends Fake implements IosProject {
   File get xcodeProjectInfoFile => xcodeProject.childFile('project.pbxproj');
 
   @override
-  var hostAppProjectName = 'Runner';
+  String hostAppProjectName = 'Runner';
 
   @override
-  Directory get flutterSwiftPackagesDirectory =>
-      hostAppRoot.childDirectory('Flutter').childDirectory('ephemeral').childDirectory('Packages');
-
-  @override
-  Directory get relativeSwiftPackagesDirectory =>
-      flutterSwiftPackagesDirectory.childDirectory('.packages');
-
-  @override
-  Directory get flutterPluginSwiftPackageDirectory =>
-      flutterSwiftPackagesDirectory.childDirectory('FlutterGeneratedPluginSwiftPackage');
+  Directory get flutterPluginSwiftPackageDirectory => hostAppRoot
+      .childDirectory('Flutter')
+      .childDirectory('ephemeral')
+      .childDirectory('Packages')
+      .childDirectory('FlutterGeneratedPluginSwiftPackage');
 
   @override
   File get flutterPluginSwiftPackageManifest =>
@@ -376,15 +391,20 @@ class FakeXcodeProject extends Fake implements IosProject {
   @override
   bool get flutterPluginSwiftPackageInProjectSettings {
     return xcodeProjectInfoFile.existsSync() &&
-        xcodeProjectInfoFile.readAsStringSync().contains('FlutterGeneratedPluginSwiftPackage');
+        xcodeProjectInfoFile
+            .readAsStringSync()
+            .contains('FlutterGeneratedPluginSwiftPackage');
   }
 }
 
 class FakePlugin extends Fake implements Plugin {
-  FakePlugin({required this.name, required this.platforms, required String? pluginSwiftPackagePath})
-    : _pluginSwiftPackagePath = pluginSwiftPackagePath;
+  FakePlugin({
+    required this.name,
+    required this.platforms,
+    required String? pluginSwiftPackageManifestPath,
+  }) : _pluginSwiftPackageManifestPath = pluginSwiftPackageManifestPath;
 
-  final String? _pluginSwiftPackagePath;
+  final String? _pluginSwiftPackageManifestPath;
 
   @override
   final String name;
@@ -393,16 +413,11 @@ class FakePlugin extends Fake implements Plugin {
   final Map<String, PluginPlatform> platforms;
 
   @override
-  String? pluginSwiftPackagePath(FileSystem fileSystem, String platform) {
-    return _pluginSwiftPackagePath;
-  }
-
-  @override
-  String? pluginSwiftPackageManifestPath(FileSystem fileSystem, String platform) {
-    if (_pluginSwiftPackagePath == null) {
-      return null;
-    }
-    return '$_pluginSwiftPackagePath/Package.swift';
+  String? pluginSwiftPackageManifestPath(
+    FileSystem fileSystem,
+    String platform,
+  ) {
+    return _pluginSwiftPackageManifestPath;
   }
 }
 

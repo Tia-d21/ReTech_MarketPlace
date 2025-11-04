@@ -3,7 +3,6 @@
 // found in the LICENSE file.
 
 /// @docImport 'package:flutter/material.dart';
-/// @docImport 'package:flutter_test/flutter_test.dart';
 library;
 
 import 'dart:math' as math;
@@ -163,18 +162,17 @@ class BoxShadow extends ui.Shadow {
     if (other.runtimeType != runtimeType) {
       return false;
     }
-    return other is BoxShadow &&
-        other.color == color &&
-        other.offset == offset &&
-        other.blurRadius == blurRadius &&
-        other.spreadRadius == spreadRadius &&
-        other.blurStyle == blurStyle;
+    return other is BoxShadow
+        && other.color == color
+        && other.offset == offset
+        && other.blurRadius == blurRadius
+        && other.spreadRadius == spreadRadius
+        && other.blurStyle == blurStyle;
   }
 
   @override
   int get hashCode => Object.hash(color, offset, blurRadius, spreadRadius, blurStyle);
 
   @override
-  String toString() =>
-      'BoxShadow($color, $offset, ${debugFormatDouble(blurRadius)}, ${debugFormatDouble(spreadRadius)}, $blurStyle)';
+  String toString() => 'BoxShadow($color, $offset, ${debugFormatDouble(blurRadius)}, ${debugFormatDouble(spreadRadius)}, $blurStyle)';
 }

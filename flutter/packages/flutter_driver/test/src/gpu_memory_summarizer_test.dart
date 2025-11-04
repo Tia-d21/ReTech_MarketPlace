@@ -10,13 +10,17 @@ import '../common.dart';
 TimelineEvent newGPUTraceEvent(double ms) => TimelineEvent(<String, dynamic>{
   'name': 'AllocatorVK',
   'ph': 'b',
-  'args': <String, String>{'MemoryBudgetUsageMB': ms.toString()},
+  'args': <String, String>{
+    'MemoryBudgetUsageMB': ms.toString()
+  },
 });
 
 TimelineEvent newMetalGPUTraceEvent(double ms) => TimelineEvent(<String, dynamic>{
   'name': 'AllocatorMTL',
   'ph': 'b',
-  'args': <String, String>{'MemoryBudgetUsageMB': ms.toString()},
+  'args': <String, String>{
+    'MemoryBudgetUsageMB': ms.toString()
+  },
 });
 
 void main() {

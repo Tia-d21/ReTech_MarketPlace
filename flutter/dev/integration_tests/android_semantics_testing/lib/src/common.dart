@@ -156,7 +156,8 @@ class AndroidSemanticsNode {
     }
     return <AndroidSemanticsAction>[
       for (final int id in actions)
-        if (AndroidSemanticsAction.deserialize(id) case final AndroidSemanticsAction action) action,
+        if (AndroidSemanticsAction.deserialize(id) case final AndroidSemanticsAction action)
+          action,
     ];
   }
 
@@ -165,6 +166,7 @@ class AndroidSemanticsNode {
     return _values.toString();
   }
 }
+
 
 /// A Dart VM implementation of a rectangle.
 ///
@@ -196,11 +198,11 @@ class Rect {
     if (other.runtimeType != runtimeType) {
       return false;
     }
-    return other is Rect &&
-        other.top == top &&
-        other.left == left &&
-        other.right == right &&
-        other.bottom == bottom;
+    return other is Rect
+        && other.top == top
+        && other.left == left
+        && other.right == right
+        && other.bottom == bottom;
   }
 
   @override
@@ -229,7 +231,9 @@ class Size {
     if (other.runtimeType != runtimeType) {
       return false;
     }
-    return other is Size && other.width == width && other.height == height;
+    return other is Size
+        && other.width == width
+        && other.height == height;
   }
 
   @override

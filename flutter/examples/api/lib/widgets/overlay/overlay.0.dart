@@ -13,7 +13,9 @@ class OverlayApp extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return const MaterialApp(home: OverlayExample());
+    return const MaterialApp(
+      home: OverlayExample(),
+    );
   }
 }
 
@@ -81,7 +83,10 @@ class _OverlayExampleState extends State<OverlayExample> {
                     child: Center(
                       child: Container(
                         decoration: BoxDecoration(
-                          border: Border.all(color: borderColor, width: 4.0),
+                          border: Border.all(
+                            color: borderColor,
+                            width: 4.0,
+                          ),
                         ),
                       ),
                     ),
@@ -115,12 +120,20 @@ class _OverlayExampleState extends State<OverlayExample> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(title: const Text('Overlay Sample')),
+      appBar: AppBar(
+        title: const Text('Overlay Sample'),
+      ),
       bottomNavigationBar: NavigationBar(
         selectedIndex: currentPageIndex,
         destinations: const <NavigationDestination>[
-          NavigationDestination(icon: Icon(Icons.explore), label: 'Explore'),
-          NavigationDestination(icon: Icon(Icons.commute), label: 'Commute'),
+          NavigationDestination(
+            icon: Icon(Icons.explore),
+            label: 'Explore',
+          ),
+          NavigationDestination(
+            icon: Icon(Icons.commute),
+            label: 'Commute',
+          ),
           NavigationDestination(
             selectedIcon: Icon(Icons.bookmark),
             icon: Icon(Icons.bookmark_border),
@@ -128,76 +141,71 @@ class _OverlayExampleState extends State<OverlayExample> {
           ),
         ],
       ),
-      body: Center(
-        child: Padding(
-          padding: const EdgeInsets.all(8.0),
-          child: Column(
-            spacing: 10.0,
+      body: Column(
+        mainAxisAlignment: MainAxisAlignment.center,
+        children: <Widget>[
+          Text(
+            'Use Overlay to highlight a NavigationBar destination',
+            style: Theme.of(context).textTheme.bodyMedium,
+          ),
+          const SizedBox(height: 20.0),
+          Row(
             mainAxisAlignment: MainAxisAlignment.center,
             children: <Widget>[
-              Text(
-                'Use Overlay to highlight a NavigationBar destination',
-                style: Theme.of(context).textTheme.bodyMedium,
-              ),
-              Wrap(
-                spacing: 10.0,
-                runSpacing: 10.0,
-                alignment: WrapAlignment.center,
-                runAlignment: WrapAlignment.center,
-                children: <Widget>[
-                  // This creates a highlight Overlay for
-                  // the Explore item.
-                  ElevatedButton(
-                    onPressed: () {
-                      setState(() {
-                        currentPageIndex = 0;
-                      });
-                      createHighlightOverlay(
-                        alignment: AlignmentDirectional.bottomStart,
-                        borderColor: Colors.red,
-                      );
-                    },
-                    child: const Text('Explore'),
-                  ),
-                  // This creates a highlight Overlay for
-                  // the Commute item.
-                  ElevatedButton(
-                    onPressed: () {
-                      setState(() {
-                        currentPageIndex = 1;
-                      });
-                      createHighlightOverlay(
-                        alignment: AlignmentDirectional.bottomCenter,
-                        borderColor: Colors.green,
-                      );
-                    },
-                    child: const Text('Commute'),
-                  ),
-                  // This creates a highlight Overlay for
-                  // the Saved item.
-                  ElevatedButton(
-                    onPressed: () {
-                      setState(() {
-                        currentPageIndex = 2;
-                      });
-                      createHighlightOverlay(
-                        alignment: AlignmentDirectional.bottomEnd,
-                        borderColor: Colors.orange,
-                      );
-                    },
-                    child: const Text('Saved'),
-                  ),
-                ],
-              ),
+              // This creates a highlight Overlay for
+              // the Explore item.
               ElevatedButton(
                 onPressed: () {
-                  removeHighlightOverlay();
+                  setState(() {
+                    currentPageIndex = 0;
+                  });
+                  createHighlightOverlay(
+                    alignment: AlignmentDirectional.bottomStart,
+                    borderColor: Colors.red,
+                  );
                 },
-                child: const Text('Remove Overlay'),
+                child: const Text('Explore'),
+              ),
+              const SizedBox(width: 20.0),
+              // This creates a highlight Overlay for
+              // the Commute item.
+              ElevatedButton(
+                onPressed: () {
+                  setState(() {
+                    currentPageIndex = 1;
+                  });
+                  createHighlightOverlay(
+                    alignment: AlignmentDirectional.bottomCenter,
+                    borderColor: Colors.green,
+                  );
+                },
+                child: const Text('Commute'),
+              ),
+              const SizedBox(width: 20.0),
+              // This creates a highlight Overlay for
+              // the Saved item.
+              ElevatedButton(
+                onPressed: () {
+                  setState(() {
+                    currentPageIndex = 2;
+                  });
+                  createHighlightOverlay(
+                    alignment: AlignmentDirectional.bottomEnd,
+                    borderColor: Colors.orange,
+                  );
+                },
+                child: const Text('Saved'),
               ),
             ],
           ),
-        ),
+          const SizedBox(height: 10.0),
+          ElevatedButton(
+            onPressed: () {
+              removeHighlightOverlay();
+            },
+            child: const Text('Remove Overlay'),
+          ),
+        ],
       ),
     );
   }

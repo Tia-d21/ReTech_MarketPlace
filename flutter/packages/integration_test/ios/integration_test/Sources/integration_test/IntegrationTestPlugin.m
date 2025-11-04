@@ -50,11 +50,6 @@ static NSString *const kMethodRevertImage = @"revertFlutterImage";
   [registrar addMethodCallDelegate:[self instance] channel:channel];
 }
 
-/// Handle method calls from Dart code:
-/// - allTestsFinished: Populate NSString* testResults property with a string summary of test run.
-/// - captureScreenshot: Capture a screenshot. Populate capturedScreenshotsByName["name"] with image.
-/// - convertSurfaceToImage: Android-only. Not implemented on iOS.
-/// - revertFlutterImage: Android-only. Not implemented on iOS.
 - (void)handleMethodCall:(FlutterMethodCall *)call result:(FlutterResult)result {
   if ([call.method isEqualToString:kMethodTestFinished]) {
     self.testResults = call.arguments[@"results"];
@@ -78,28 +73,18 @@ static NSString *const kMethodRevertImage = @"revertFlutterImage";
 }
 
 - (UIImage *)capturePngScreenshot {
-  // Get all windows in the app
-#pragma clang diagnostic push
-#pragma clang diagnostic ignored "-Wdeprecated-declarations"
-  // TODO(jmagman) Use scenes instead of deprecated windows. See
-  // https://github.com/flutter/flutter/issues/154365
-  NSArray<UIWindow *> *windows = [UIApplication sharedApplication].windows;
-#pragma clang diagnostic pop
+  UIWindow *window = [UIApplication.sharedApplication.windows
+                      filteredArrayUsingPredicate:[NSPredicate predicateWithFormat:@"keyWindow = YES"]].firstObject;
+  CGRect screenshotBounds = window.bounds;
+  UIImage *image;
 
-  // Find the overall bounding rect for all windows
-  CGRect screenBounds = [UIScreen mainScreen].bounds;
+  UIGraphicsImageRenderer *renderer = [[UIGraphicsImageRenderer alloc] initWithBounds:screenshotBounds];
 
-  UIGraphicsImageRenderer *renderer = [[UIGraphicsImageRenderer alloc] initWithBounds:screenBounds];
-  UIImage *screenshot =
-      [renderer imageWithActions:^(UIGraphicsImageRendererContext *_Nonnull rendererContext) {
-        for (UIWindow *window in windows) {
-          if (!window.hidden) {  // Render only visible windows
-            [window drawViewHierarchyInRect:window.frame afterScreenUpdates:YES];
-          }
-        }
-      }];
+  image = [renderer imageWithActions:^(UIGraphicsImageRendererContext *rendererContext) {
+    [window drawViewHierarchyInRect:screenshotBounds afterScreenUpdates:YES];
+  }];
 
-  return screenshot;
+  return image;
 }
 
 @end

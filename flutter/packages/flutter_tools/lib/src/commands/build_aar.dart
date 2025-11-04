@@ -14,6 +14,7 @@ import '../build_info.dart';
 import '../cache.dart';
 import '../globals.dart' as globals;
 import '../project.dart';
+import '../reporting/reporting.dart';
 import '../runner/flutter_command.dart' show FlutterCommandResult;
 import 'build.dart';
 
@@ -23,11 +24,15 @@ class BuildAarCommand extends BuildSubCommand {
     required AndroidSdk? androidSdk,
     required FileSystem fileSystem,
     required bool verboseHelp,
-  }) : _androidSdk = androidSdk,
-       _fileSystem = fileSystem,
-       super(verboseHelp: verboseHelp) {
+  }): _androidSdk = androidSdk,
+      _fileSystem = fileSystem,
+      super(verboseHelp: verboseHelp) {
     argParser
-      ..addFlag('debug', defaultsTo: true, help: 'Build a debug version of the current project.')
+      ..addFlag(
+        'debug',
+        defaultsTo: true,
+        help: 'Build a debug version of the current project.',
+      )
       ..addFlag(
         'profile',
         defaultsTo: true,
@@ -48,20 +53,25 @@ class BuildAarCommand extends BuildSubCommand {
     usesDartDefineOption();
     usesExtraDartFlagOptions(verboseHelp: verboseHelp);
     usesTrackWidgetCreation(verboseHelp: false);
+    addNullSafetyModeOptions(hide: !verboseHelp);
     addEnableExperimentation(hide: !verboseHelp);
     addAndroidSpecificBuildOptions(hide: !verboseHelp);
-    argParser.addMultiOption(
-      'target-platform',
-      defaultsTo: <String>['android-arm', 'android-arm64', 'android-x64'],
-      allowed: <String>['android-arm', 'android-arm64', 'android-x64'],
-      help: 'The target platform for which the project is compiled.',
-    );
+    argParser
+      .addMultiOption(
+        'target-platform',
+        defaultsTo: <String>['android-arm', 'android-arm64', 'android-x64'],
+        allowed: <String>['android-arm', 'android-arm64', 'android-x86', 'android-x64'],
+        help: 'The target platform for which the project is compiled.',
+      );
   }
   final AndroidSdk? _androidSdk;
   final FileSystem _fileSystem;
 
   @override
-  final name = 'aar';
+  final String name = 'aar';
+
+  @override
+  bool get reportNullSafety => false;
 
   @override
   Future<Set<DevelopmentArtifact>> get requiredArtifacts async => <DevelopmentArtifact>{
@@ -70,6 +80,23 @@ class BuildAarCommand extends BuildSubCommand {
 
   @override
   late final FlutterProject project = _getProject();
+
+  @override
+  Future<CustomDimensions> get usageValues async {
+    final String projectType;
+    if (project.manifest.isModule) {
+      projectType = 'module';
+    } else if (project.manifest.isPlugin) {
+      projectType = 'plugin';
+    } else {
+      projectType = 'app';
+    }
+
+    return CustomDimensions(
+      commandBuildAarProjectType: projectType,
+      commandBuildAarTargetPlatform: stringsArg('target-platform').join(','),
+    );
+  }
 
   @override
   Future<Event> unifiedAnalyticsUsageValues(String commandPath) async {
@@ -91,8 +118,7 @@ class BuildAarCommand extends BuildSubCommand {
   }
 
   @override
-  final description =
-      'Build a repository containing an AAR and a POM file.\n\n'
+  final String description = 'Build a repository containing an AAR and a POM file.\n\n'
       'By default, AARs are built for `release`, `debug` and `profile`.\n'
       'The POM file is used to include the dependencies that the AAR was compiled against.\n'
       'To learn more about how to use these artifacts, see: https://flutter.dev/to/integrate-android-archive\n'
@@ -108,29 +134,24 @@ class BuildAarCommand extends BuildSubCommand {
   }
 
   @override
-  bool get regeneratePlatformSpecificToolingDuringVerify => false;
-
-  @override
   Future<FlutterCommandResult> runCommand() async {
     if (_androidSdk == null) {
       exitWithNoSdkMessage();
     }
-    final androidBuildInfo = <AndroidBuildInfo>{};
+    final Set<AndroidBuildInfo> androidBuildInfo = <AndroidBuildInfo>{};
 
-    final Iterable<AndroidArch> targetArchitectures = stringsArg(
-      'target-platform',
-    ).map<AndroidArch>(getAndroidArchForName);
+    final Iterable<AndroidArch> targetArchitectures =
+        stringsArg('target-platform').map<AndroidArch>(getAndroidArchForName);
 
     final String? buildNumberArg = stringArg('build-number');
-    final String buildNumber =
-        argParser.options.containsKey('build-number') &&
-            buildNumberArg != null &&
-            buildNumberArg.isNotEmpty
-        ? buildNumberArg
-        : '1.0';
+    final String buildNumber = argParser.options.containsKey('build-number')
+      && buildNumberArg != null
+      && buildNumberArg.isNotEmpty
+      ? buildNumberArg
+      : '1.0';
 
     final File targetFile = _fileSystem.file(_fileSystem.path.join('lib', 'main.dart'));
-    for (final buildMode in const <String>['debug', 'profile', 'release']) {
+    for (final String buildMode in const <String>['debug', 'profile', 'release']) {
       if (boolArg(buildMode)) {
         androidBuildInfo.add(
           AndroidBuildInfo(
@@ -139,7 +160,7 @@ class BuildAarCommand extends BuildSubCommand {
               forcedTargetFile: targetFile,
             ),
             targetArchs: targetArchitectures,
-          ),
+          )
         );
       }
     }
@@ -147,11 +168,11 @@ class BuildAarCommand extends BuildSubCommand {
       throwToolExit('Please specify a build mode and try again.');
     }
 
+    displayNullSafetyMode(androidBuildInfo.first.buildInfo);
     await androidBuilder?.buildAar(
       project: project,
       target: targetFile.path,
       androidBuildInfo: androidBuildInfo,
-      generateTooling: regeneratePlatformSpecificToolingIfApplicable,
       outputDirectoryPath: stringArg('output'),
       buildNumber: buildNumber,
     );
@@ -160,10 +181,13 @@ class BuildAarCommand extends BuildSubCommand {
     // is enabled or disabled. Note that 'computeImpellerEnabled' will default
     // to false if not enabled explicitly in the manifest.
     final bool impellerEnabled = project.android.computeImpellerEnabled();
-    final buildLabel = impellerEnabled
-        ? 'manifest-aar-impeller-enabled'
-        : 'manifest-aar-impeller-disabled';
-    globals.analytics.send(Event.flutterBuildInfo(label: buildLabel, buildType: 'android'));
+    final String buildLabel = impellerEnabled
+          ? 'manifest-aar-impeller-enabled'
+          : 'manifest-aar-impeller-disabled';
+    globals.analytics.send(Event.flutterBuildInfo(
+      label: buildLabel,
+      buildType: 'android',
+    ));
 
     return FlutterCommandResult.success();
   }
