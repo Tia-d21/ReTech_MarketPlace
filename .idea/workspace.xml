@@ -4,49 +4,10 @@
     <option name="autoReloadType" value="NONE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="8ee04313-27f8-42f9-b1e1-98e21f147b0f" name="Changes" comment="">
-      <change afterPath="$PROJECT_DIR$/.config/settings" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/.config/tool_state" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/.idea/caches/deviceStreaming.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/.idea/libraries/Dart_Packages.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/.idea/libraries/Flutter_Plugins.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/.idea/vcs.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/.local/state/replit/agent/.agent_state_14efb96b0e4727129a3ce001ed2b44aef7e119c6.bin" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/.local/state/replit/agent/.agent_state_30b3f758adcd6fe44723a73c868c31fe64d064cb.bin" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/.local/state/replit/agent/.agent_state_main.bin" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/.local/state/replit/agent/.latest.json" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/.local/state/replit/agent/repl_state.bin" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/assets/images/bluetoothspeaker.png" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/assets/images/hplaptop.png" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/assets/images/iphone.png" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/assets/images/laptopdell.png" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/assets/images/playstation.png" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/assets/images/samsung.png" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/assets/images/tv.png" afterDir="false" />
+    <list default="true" id="8ee04313-27f8-42f9-b1e1-98e21f147b0f" name="Changes" comment="initial commit">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/flutter/bin/dart" beforeDir="false" afterPath="$PROJECT_DIR$/flutter/bin/dart" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/flutter/bin/flutter" beforeDir="false" afterPath="$PROJECT_DIR$/flutter/bin/flutter" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/flutter/bin/internal/update_dart_sdk.sh" beforeDir="false" afterPath="$PROJECT_DIR$/flutter/bin/internal/update_dart_sdk.sh" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/flutter/dev/bots/codelabs_build_test.sh" beforeDir="false" afterPath="$PROJECT_DIR$/flutter/dev/bots/codelabs_build_test.sh" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/flutter/dev/bots/docs.sh" beforeDir="false" afterPath="$PROJECT_DIR$/flutter/dev/bots/docs.sh" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/flutter/dev/customer_testing/ci.sh" beforeDir="false" afterPath="$PROJECT_DIR$/flutter/dev/customer_testing/ci.sh" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/flutter/dev/integration_tests/deferred_components_test/download_assets.sh" beforeDir="false" afterPath="$PROJECT_DIR$/flutter/dev/integration_tests/deferred_components_test/download_assets.sh" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/flutter/dev/integration_tests/deferred_components_test/run_release_test.sh" beforeDir="false" afterPath="$PROJECT_DIR$/flutter/dev/integration_tests/deferred_components_test/run_release_test.sh" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/flutter/dev/integration_tests/flutter_gallery/tool/run_instrumentation_test.sh" beforeDir="false" afterPath="$PROJECT_DIR$/flutter/dev/integration_tests/flutter_gallery/tool/run_instrumentation_test.sh" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/flutter/dev/integration_tests/ios_add2app_life_cycle/build_and_test.sh" beforeDir="false" afterPath="$PROJECT_DIR$/flutter/dev/integration_tests/ios_add2app_life_cycle/build_and_test.sh" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/flutter/dev/tools/gen_keycodes/bin/gen_keycodes" beforeDir="false" afterPath="$PROJECT_DIR$/flutter/dev/tools/gen_keycodes/bin/gen_keycodes" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/flutter/dev/tools/repackage_gradle_wrapper.sh" beforeDir="false" afterPath="$PROJECT_DIR$/flutter/dev/tools/repackage_gradle_wrapper.sh" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/flutter/packages/flutter_tools/bin/macos_assemble.sh" beforeDir="false" afterPath="$PROJECT_DIR$/flutter/packages/flutter_tools/bin/macos_assemble.sh" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/flutter/packages/flutter_tools/bin/tool_backend.sh" beforeDir="false" afterPath="$PROJECT_DIR$/flutter/packages/flutter_tools/bin/tool_backend.sh" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/flutter/packages/flutter_tools/bin/xcode_backend.sh" beforeDir="false" afterPath="$PROJECT_DIR$/flutter/packages/flutter_tools/bin/xcode_backend.sh" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/lib/models/device_model.dart" beforeDir="false" afterPath="$PROJECT_DIR$/lib/models/device_model.dart" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/lib/screens/add_device_screen.dart" beforeDir="false" afterPath="$PROJECT_DIR$/lib/screens/add_device_screen.dart" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/lib/screens/buyer_screen.dart" beforeDir="false" afterPath="$PROJECT_DIR$/lib/screens/buyer_screen.dart" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/lib/screens/device_detail_screen.dart" beforeDir="false" afterPath="$PROJECT_DIR$/lib/screens/device_detail_screen.dart" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/lib/screens/seller_screen.dart" beforeDir="false" afterPath="$PROJECT_DIR$/lib/screens/seller_screen.dart" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/pubspec.yaml" beforeDir="false" afterPath="$PROJECT_DIR$/pubspec.yaml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/replit.md" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/workspace.iml" beforeDir="false" afterPath="$PROJECT_DIR$/workspace.iml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.replit" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/README.md" beforeDir="false" afterPath="$PROJECT_DIR$/README.md" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -72,6 +33,18 @@
   <component name="Git.Settings">
     <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
   </component>
+  <component name="GitHubPullRequestSearchHistory"><![CDATA[{
+  "lastFilter": {
+    "state": "OPEN",
+    "assignee": "Tia-d21"
+  }
+}]]></component>
+  <component name="GithubPullRequestsUISettings"><![CDATA[{
+  "selectedUrlAndAccountId": {
+    "url": "https://github.com/Tia-d21/ReTech_MarketPlace.git",
+    "accountId": "2612783b-1de8-4ade-8abe-cf430087d229"
+  }
+}]]></component>
   <component name="ProjectColorInfo">{
   &quot;associatedIndex&quot;: 4
 }</component>
@@ -118,6 +91,15 @@
       <option name="presentableId" value="Default" />
       <updated>1762300368157</updated>
     </task>
+    <task id="LOCAL-00001" summary="initial commit">
+      <option name="closed" value="true" />
+      <created>1762309969155</created>
+      <option name="number" value="00001" />
+      <option name="presentableId" value="LOCAL-00001" />
+      <option name="project" value="LOCAL" />
+      <updated>1762309969155</updated>
+    </task>
+    <option name="localTasksCounter" value="2" />
     <servers />
   </component>
   <component name="ToolWindowManager">
@@ -136,5 +118,9 @@
         </entry>
       </map>
     </option>
+  </component>
+  <component name="VcsManagerConfiguration">
+    <MESSAGE value="initial commit" />
+    <option name="LAST_COMMIT_MESSAGE" value="initial commit" />
   </component>
 </project>
