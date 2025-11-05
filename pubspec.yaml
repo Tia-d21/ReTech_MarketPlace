@@ -16,3 +16,11 @@ dev_dependencies:
 
 flutter:
   uses-material-design: true
+  assets:
+    - assets/images/iphone.png
+    - assets/images/samsung.png
+    - assets/images/laptopdell.png
+    - assets/images/hplaptop.png
+    - assets/images/bluetoothspeaker.png
+    - assets/images/playstation.png
+    - assets/images/tv.png

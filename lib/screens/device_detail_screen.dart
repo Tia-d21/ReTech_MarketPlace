@@ -41,11 +41,41 @@ class DeviceDetailScreen extends StatelessWidget {
                 ),
                 const SizedBox(height: 12),
                 Text(
-                  'You can now chat with the seller about this device.',
+                  'You can now contact the seller about this device.',
                   textAlign: TextAlign.center,
                   style: TextStyle(
                     fontSize: 16,
                     color: Colors.grey.shade600,
+                  ),
+                ),
+                const SizedBox(height: 16),
+
+                // SELLER INFO
+                Container(
+                  padding: const EdgeInsets.all(12),
+                  decoration: BoxDecoration(
+                    color: Colors.blue.shade50,
+                    borderRadius: BorderRadius.circular(12),
+                    border: Border.all(color: Colors.blue.shade200),
+                  ),
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Text(
+                        'Seller: ${device.sellerName ?? "Unknown"}',
+                        style: const TextStyle(
+                          fontSize: 16,
+                          fontWeight: FontWeight.bold,
+                        ),
+                      ),
+                      const SizedBox(height: 4),
+                      Text(
+                        'Contact: ${device.sellerContact ?? "Not provided"}',
+                        style: const TextStyle(
+                          fontSize: 16,
+                        ),
+                      ),
+                    ],
                   ),
                 ),
                 const SizedBox(height: 24),
@@ -98,7 +128,9 @@ class DeviceDetailScreen extends StatelessWidget {
               decoration: BoxDecoration(
                 color: Colors.grey.shade200,
               ),
-              child: Center(
+              child: device.imagePath != null
+                  ? Image.asset(device.imagePath!, fit: BoxFit.contain)
+                  : Center(
                 child: Icon(
                   Icons.phone_android,
                   size: 120,
@@ -178,7 +210,8 @@ class DeviceDetailScreen extends StatelessWidget {
                       children: [
                         Row(
                           children: [
-                            Icon(Icons.psychology, color: Colors.green.shade700),
+                            Icon(Icons.psychology,
+                                color: Colors.green.shade700),
                             const SizedBox(width: 8),
                             Text(
                               'AI Price Insights',
@@ -191,7 +224,8 @@ class DeviceDetailScreen extends StatelessWidget {
                           ],
                         ),
                         const SizedBox(height: 12),
-                        _buildInfoRow('Estimated repair cost:', device.estimatedRepairCost),
+                        _buildInfoRow(
+                            'Estimated repair cost:', device.estimatedRepairCost),
                         const SizedBox(height: 8),
                         _buildInfoRow('Resale value:', device.resaleValue),
                       ],

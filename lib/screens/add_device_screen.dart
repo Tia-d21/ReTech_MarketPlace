@@ -10,288 +10,161 @@ class AddDeviceScreen extends StatefulWidget {
 
 class _AddDeviceScreenState extends State<AddDeviceScreen> {
   final _formKey = GlobalKey<FormState>();
-  final _nameController = TextEditingController();
-  final _priceController = TextEditingController();
-  String _selectedCondition = 'Good';
-  bool _hasImage = false;
+  final TextEditingController _nameController = TextEditingController();
+  final TextEditingController _conditionController = TextEditingController();
+  final TextEditingController _priceController = TextEditingController();
+  final TextEditingController _repairCostController = TextEditingController();
+  final TextEditingController _resaleValueController = TextEditingController();
+  final TextEditingController _sellerNameController = TextEditingController();
+  final TextEditingController _sellerContactController = TextEditingController();
 
-  final List<String> _conditions = ['Excellent', 'Good', 'Fair', 'Poor'];
+  String? _selectedImagePath;
 
-  @override
-  void dispose() {
-    _nameController.dispose();
-    _priceController.dispose();
-    super.dispose();
-  }
-
-  void _mockUploadPhoto() {
-    setState(() {
-      _hasImage = true;
-    });
-    ScaffoldMessenger.of(context).showSnackBar(
-      SnackBar(
-        content: const Row(
-          children: [
-            Icon(Icons.check_circle, color: Colors.white),
-            SizedBox(width: 12),
-            Text('Photo uploaded (mock)'),
-          ],
-        ),
-        backgroundColor: Colors.green.shade700,
-        behavior: SnackBarBehavior.floating,
-        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(10)),
-      ),
-    );
-  }
-
-  void _submitDevice() {
-    if (_formKey.currentState!.validate()) {
-      final device = Device(
-        id: DateTime.now().millisecondsSinceEpoch.toString(),
-        name: _nameController.text,
-        condition: _selectedCondition,
-        price: double.parse(_priceController.text),
-        imagePath: _hasImage ? 'mock_image_path' : null,
-        estimatedRepairCost: _calculateRepairCost(),
-        resaleValue: _calculateResaleValue(),
-      );
-
-      DeviceData.addDevice(device);
-
-      ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(
-          content: const Row(
-            children: [
-              Icon(Icons.check_circle, color: Colors.white),
-              SizedBox(width: 12),
-              Text('Device added successfully!'),
-            ],
-          ),
-          backgroundColor: Colors.green.shade700,
-          behavior: SnackBarBehavior.floating,
-          shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(10)),
-        ),
-      );
-
-      Navigator.pop(context);
-    }
-  }
-
-  String _calculateRepairCost() {
-    final price = double.tryParse(_priceController.text) ?? 0;
-    final cost = (price * 0.2).toStringAsFixed(0);
-    return '$cost ETB';
-  }
-
-  String _calculateResaleValue() {
-    final price = double.tryParse(_priceController.text) ?? 0;
-    final value = (price * 1.3).toStringAsFixed(0);
-    return '$value ETB';
-  }
+  final Map<String, String> _imageOptions = {
+    'iPhone': 'assets/images/iphone.png',
+    'Samsung': 'assets/images/samsung.png',
+    'Dell Laptop': 'assets/images/laptopdell.png',
+    'HP Laptop': 'assets/images/hplaptop.png',
+    'Bluetooth Speaker': 'assets/images/bluetoothspeaker.png',
+    'PlayStation': 'assets/images/playstation.png',
+    'TV': 'assets/images/tv.png',
+  };
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: const Text('Add Device'),
+        title: const Text('Add New Device'),
         backgroundColor: Colors.green.shade700,
-        foregroundColor: Colors.white,
-        elevation: 0,
       ),
-      body: Container(
-        decoration: BoxDecoration(
-          gradient: LinearGradient(
-            begin: Alignment.topCenter,
-            end: Alignment.bottomCenter,
-            colors: [
-              Colors.green.shade50,
-              Colors.white,
-            ],
-          ),
-        ),
-        child: SingleChildScrollView(
-          padding: const EdgeInsets.all(24),
-          child: Form(
-            key: _formKey,
+      body: Padding(
+        padding: const EdgeInsets.all(16.0),
+        child: Form(
+          key: _formKey,
+          child: SingleChildScrollView(
             child: Column(
-              crossAxisAlignment: CrossAxisAlignment.stretch,
               children: [
-                Text(
-                  'Device Details',
-                  style: TextStyle(
-                    fontSize: 24,
-                    fontWeight: FontWeight.bold,
-                    color: Colors.grey.shade800,
-                  ),
-                ),
-                const SizedBox(height: 24),
-                GestureDetector(
-                  onTap: _mockUploadPhoto,
-                  child: Container(
-                    height: 200,
-                    decoration: BoxDecoration(
-                      color: _hasImage ? Colors.green.shade50 : Colors.grey.shade100,
-                      borderRadius: BorderRadius.circular(16),
-                      border: Border.all(
-                        color: _hasImage ? Colors.green.shade300 : Colors.grey.shade300,
-                        width: 2,
-                        style: BorderStyle.solid,
-                      ),
-                    ),
-                    child: Center(
-                      child: Column(
-                        mainAxisAlignment: MainAxisAlignment.center,
-                        children: [
-                          Icon(
-                            _hasImage ? Icons.check_circle : Icons.add_photo_alternate,
-                            size: 64,
-                            color: _hasImage ? Colors.green.shade700 : Colors.grey.shade400,
-                          ),
-                          const SizedBox(height: 12),
-                          Text(
-                            _hasImage ? 'Photo Added' : 'Tap to upload photo',
-                            style: TextStyle(
-                              fontSize: 16,
-                              color: _hasImage ? Colors.green.shade700 : Colors.grey.shade600,
-                              fontWeight: _hasImage ? FontWeight.w600 : FontWeight.normal,
-                            ),
-                          ),
-                        ],
-                      ),
-                    ),
-                  ),
-                ),
-                const SizedBox(height: 24),
+                // DEVICE INFO
                 TextFormField(
                   controller: _nameController,
-                  decoration: InputDecoration(
-                    labelText: 'Device Name',
-                    hintText: 'e.g., iPhone 13 Pro',
-                    prefixIcon: const Icon(Icons.phone_android),
-                    border: OutlineInputBorder(
-                      borderRadius: BorderRadius.circular(12),
-                    ),
-                    filled: true,
-                    fillColor: Colors.white,
-                  ),
-                  validator: (value) {
-                    if (value == null || value.isEmpty) {
-                      return 'Please enter device name';
-                    }
-                    return null;
-                  },
+                  decoration: const InputDecoration(labelText: 'Device Name'),
+                  validator: (value) =>
+                  value!.isEmpty ? 'Enter device name' : null,
                 ),
-                const SizedBox(height: 16),
-                DropdownButtonFormField<String>(
-                  value: _selectedCondition,
-                  decoration: InputDecoration(
-                    labelText: 'Condition',
-                    prefixIcon: const Icon(Icons.info_outline),
-                    border: OutlineInputBorder(
-                      borderRadius: BorderRadius.circular(12),
-                    ),
-                    filled: true,
-                    fillColor: Colors.white,
-                  ),
-                  items: _conditions.map((condition) {
-                    return DropdownMenuItem(
-                      value: condition,
-                      child: Text(condition),
-                    );
-                  }).toList(),
-                  onChanged: (value) {
-                    setState(() {
-                      _selectedCondition = value!;
-                    });
-                  },
+                const SizedBox(height: 12),
+                TextFormField(
+                  controller: _conditionController,
+                  decoration: const InputDecoration(labelText: 'Condition'),
+                  validator: (value) =>
+                  value!.isEmpty ? 'Enter device condition' : null,
                 ),
-                const SizedBox(height: 16),
+                const SizedBox(height: 12),
                 TextFormField(
                   controller: _priceController,
-                  decoration: InputDecoration(
-                    labelText: 'Price (ETB)',
-                    hintText: 'e.g., 5000',
-                    prefixIcon: const Icon(Icons.attach_money),
-                    border: OutlineInputBorder(
-                      borderRadius: BorderRadius.circular(12),
-                    ),
-                    filled: true,
-                    fillColor: Colors.white,
-                  ),
+                  decoration: const InputDecoration(labelText: 'Price (ETB)'),
                   keyboardType: TextInputType.number,
-                  validator: (value) {
-                    if (value == null || value.isEmpty) {
-                      return 'Please enter price';
-                    }
-                    if (double.tryParse(value) == null) {
-                      return 'Please enter valid number';
-                    }
-                    return null;
-                  },
-                  onChanged: (value) {
-                    setState(() {});
-                  },
+                  validator: (value) =>
+                  value!.isEmpty ? 'Enter device price' : null,
                 ),
-                if (_priceController.text.isNotEmpty) ...[
-                  const SizedBox(height: 16),
+                const SizedBox(height: 12),
+                TextFormField(
+                  controller: _repairCostController,
+                  decoration:
+                  const InputDecoration(labelText: 'Estimated Repair Cost'),
+                  validator: (value) =>
+                  value!.isEmpty ? 'Enter repair cost' : null,
+                ),
+                const SizedBox(height: 12),
+                TextFormField(
+                  controller: _resaleValueController,
+                  decoration: const InputDecoration(labelText: 'Resale Value'),
+                  validator: (value) =>
+                  value!.isEmpty ? 'Enter resale value' : null,
+                ),
+                const SizedBox(height: 12),
+
+                // SELLER INFO
+                TextFormField(
+                  controller: _sellerNameController,
+                  decoration: const InputDecoration(labelText: 'Seller Name'),
+                  validator: (value) =>
+                  value!.isEmpty ? 'Enter seller name' : null,
+                ),
+                const SizedBox(height: 12),
+                TextFormField(
+                  controller: _sellerContactController,
+                  decoration:
+                  const InputDecoration(labelText: 'Seller Contact'),
+                  keyboardType: TextInputType.phone,
+                  validator: (value) =>
+                  value!.isEmpty ? 'Enter seller contact' : null,
+                ),
+                const SizedBox(height: 16),
+
+                // IMAGE SELECTION
+                DropdownButtonFormField<String>(
+                  value: _selectedImagePath,
+                  items: _imageOptions.entries
+                      .map((entry) => DropdownMenuItem<String>(
+                    value: entry.value,
+                    child: Text(entry.key),
+                  ))
+                      .toList(),
+                  onChanged: (value) {
+                    setState(() {
+                      _selectedImagePath = value;
+                    });
+                  },
+                  decoration:
+                  const InputDecoration(labelText: 'Select Device Image'),
+                  validator: (value) =>
+                  value == null ? 'Select an image' : null,
+                ),
+                const SizedBox(height: 16),
+
+                // LIVE IMAGE PREVIEW
+                if (_selectedImagePath != null)
                   Container(
-                    padding: const EdgeInsets.all(16),
+                    width: 120,
+                    height: 120,
                     decoration: BoxDecoration(
-                      color: Colors.blue.shade50,
+                      border: Border.all(color: Colors.grey.shade400),
                       borderRadius: BorderRadius.circular(12),
-                      border: Border.all(color: Colors.blue.shade200),
                     ),
-                    child: Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        Row(
-                          children: [
-                            Icon(Icons.psychology, color: Colors.blue.shade700),
-                            const SizedBox(width: 8),
-                            Text(
-                              'AI Price Insights',
-                              style: TextStyle(
-                                fontWeight: FontWeight.bold,
-                                color: Colors.blue.shade900,
-                              ),
-                            ),
-                          ],
-                        ),
-                        const SizedBox(height: 12),
-                        Text(
-                          'Estimated repair cost: ${_calculateRepairCost()}',
-                          style: TextStyle(color: Colors.grey.shade700),
-                        ),
-                        const SizedBox(height: 4),
-                        Text(
-                          'Resale value: ${_calculateResaleValue()}',
-                          style: TextStyle(color: Colors.grey.shade700),
-                        ),
-                      ],
-                    ),
-                  ),
-                ],
-                const SizedBox(height: 32),
-                SizedBox(
-                  height: 56,
-                  child: ElevatedButton(
-                    onPressed: _submitDevice,
-                    style: ElevatedButton.styleFrom(
-                      backgroundColor: Colors.green.shade700,
-                      foregroundColor: Colors.white,
-                      shape: RoundedRectangleBorder(
-                        borderRadius: BorderRadius.circular(12),
-                      ),
-                      elevation: 4,
-                    ),
-                    child: const Text(
-                      'Add Device',
-                      style: TextStyle(
-                        fontSize: 18,
-                        fontWeight: FontWeight.bold,
+                    child: ClipRRect(
+                      borderRadius: BorderRadius.circular(12),
+                      child: Image.asset(
+                        _selectedImagePath!,
+                        fit: BoxFit.cover,
                       ),
                     ),
                   ),
+
+                const SizedBox(height: 24),
+                ElevatedButton(
+                  onPressed: () {
+                    if (_formKey.currentState!.validate()) {
+                      final newDevice = Device(
+                        id: DateTime.now()
+                            .millisecondsSinceEpoch
+                            .toString(), // unique id
+                        name: _nameController.text,
+                        condition: _conditionController.text,
+                        price: double.parse(_priceController.text),
+                        imagePath: _selectedImagePath,
+                        estimatedRepairCost: _repairCostController.text,
+                        resaleValue: _resaleValueController.text,
+                        sellerName: _sellerNameController.text,
+                        sellerContact: _sellerContactController.text,
+                      );
+                      DeviceData.addDevice(newDevice);
+                      Navigator.pop(context);
+                    }
+                  },
+                  style: ElevatedButton.styleFrom(
+                    backgroundColor: Colors.green.shade700,
+                  ),
+                  child: const Text('Add Device'),
                 ),
               ],
             ),

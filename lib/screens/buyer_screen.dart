@@ -2,13 +2,35 @@ import 'package:flutter/material.dart';
 import '../models/device_model.dart';
 import 'device_detail_screen.dart';
 
-class BuyerScreen extends StatelessWidget {
+class BuyerScreen extends StatefulWidget {
   const BuyerScreen({super.key});
 
   @override
-  Widget build(BuildContext context) {
-    final devices = DeviceData.getAllDevices();
+  State<BuyerScreen> createState() => _BuyerScreenState();
+}
 
+class _BuyerScreenState extends State<BuyerScreen> {
+  final TextEditingController _searchController = TextEditingController();
+  List<Device> filteredDevices = DeviceData.getAllDevices();
+
+  void _filterDevices(String query) {
+    final devices = DeviceData.getAllDevices();
+    if (query.isEmpty) {
+      setState(() {
+        filteredDevices = devices;
+      });
+    } else {
+      setState(() {
+        filteredDevices = devices
+            .where((device) =>
+            device.name.toLowerCase().contains(query.toLowerCase()))
+            .toList();
+      });
+    }
+  }
+
+  @override
+  Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
         title: const Text('Buyer Dashboard'),
@@ -21,87 +43,56 @@ class BuyerScreen extends StatelessWidget {
           gradient: LinearGradient(
             begin: Alignment.topCenter,
             end: Alignment.bottomCenter,
-            colors: [
-              Colors.blue.shade50,
-              Colors.white,
-            ],
+            colors: [Colors.blue.shade50, Colors.white],
           ),
         ),
         child: Column(
           children: [
             Padding(
               padding: const EdgeInsets.all(16.0),
-              child: Row(
-                children: [
-                  Icon(Icons.shopping_bag, color: Colors.blue.shade700, size: 28),
-                  const SizedBox(width: 12),
-                  Text(
-                    'Browse Devices',
-                    style: TextStyle(
-                      fontSize: 24,
-                      fontWeight: FontWeight.bold,
-                      color: Colors.grey.shade800,
-                    ),
+              child: TextField(
+                controller: _searchController,
+                onChanged: _filterDevices,
+                decoration: InputDecoration(
+                  hintText: 'Search devices...',
+                  prefixIcon: Icon(Icons.search, color: Colors.blue.shade700),
+                  filled: true,
+                  fillColor: Colors.white,
+                  border: OutlineInputBorder(
+                    borderRadius: BorderRadius.circular(20),
+                    borderSide: BorderSide.none,
                   ),
-                  const Spacer(),
-                  Container(
-                    padding: const EdgeInsets.symmetric(
-                      horizontal: 12,
-                      vertical: 6,
-                    ),
-                    decoration: BoxDecoration(
-                      color: Colors.blue.shade100,
-                      borderRadius: BorderRadius.circular(20),
-                    ),
-                    child: Text(
-                      '${devices.length} available',
-                      style: TextStyle(
-                        color: Colors.blue.shade800,
-                        fontWeight: FontWeight.w600,
-                      ),
-                    ),
-                  ),
-                ],
+                ),
               ),
             ),
             Expanded(
-              child: devices.isEmpty
+              child: filteredDevices.isEmpty
                   ? Center(
-                      child: Column(
-                        mainAxisAlignment: MainAxisAlignment.center,
-                        children: [
-                          Icon(
-                            Icons.inventory_2_outlined,
-                            size: 80,
-                            color: Colors.grey.shade400,
-                          ),
-                          const SizedBox(height: 16),
-                          Text(
-                            'No devices available',
-                            style: TextStyle(
-                              fontSize: 18,
-                              color: Colors.grey.shade600,
-                            ),
-                          ),
-                          const SizedBox(height: 8),
-                          Text(
-                            'Check back later',
-                            style: TextStyle(
-                              fontSize: 14,
-                              color: Colors.grey.shade500,
-                            ),
-                          ),
-                        ],
-                      ),
-                    )
-                  : ListView.builder(
-                      padding: const EdgeInsets.all(16),
-                      itemCount: devices.length,
-                      itemBuilder: (context, index) {
-                        final device = devices[index];
-                        return _buildDeviceCard(context, device);
-                      },
+                child: Column(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    Icon(
+                      Icons.inventory_2_outlined,
+                      size: 80,
+                      color: Colors.grey.shade400,
                     ),
+                    const SizedBox(height: 16),
+                    Text(
+                      'No devices found',
+                      style: TextStyle(
+                          fontSize: 18, color: Colors.grey.shade600),
+                    ),
+                  ],
+                ),
+              )
+                  : ListView.builder(
+                padding: const EdgeInsets.all(16),
+                itemCount: filteredDevices.length,
+                itemBuilder: (context, index) {
+                  final device = filteredDevices[index];
+                  return _buildDeviceCard(context, device);
+                },
+              ),
             ),
           ],
         ),
@@ -135,7 +126,9 @@ class BuyerScreen extends StatelessWidget {
                   color: Colors.grey.shade200,
                   borderRadius: BorderRadius.circular(12),
                 ),
-                child: Icon(
+                child: device.imagePath != null
+                    ? Image.asset(device.imagePath!, fit: BoxFit.cover)
+                    : Icon(
                   Icons.phone_android,
                   size: 48,
                   color: Colors.grey.shade400,

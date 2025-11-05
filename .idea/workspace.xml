@@ -1,5 +1,61 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
+  <component name="AutoImportSettings">
+    <option name="autoReloadType" value="NONE" />
+  </component>
+  <component name="ChangeListManager">
+    <list default="true" id="8ee04313-27f8-42f9-b1e1-98e21f147b0f" name="Changes" comment="">
+      <change afterPath="$PROJECT_DIR$/.config/settings" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/.config/tool_state" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/.idea/caches/deviceStreaming.xml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/.idea/libraries/Dart_Packages.xml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/.idea/libraries/Flutter_Plugins.xml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/.idea/vcs.xml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/.local/state/replit/agent/.agent_state_14efb96b0e4727129a3ce001ed2b44aef7e119c6.bin" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/.local/state/replit/agent/.agent_state_30b3f758adcd6fe44723a73c868c31fe64d064cb.bin" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/.local/state/replit/agent/.agent_state_main.bin" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/.local/state/replit/agent/.latest.json" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/.local/state/replit/agent/repl_state.bin" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/assets/images/bluetoothspeaker.png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/assets/images/hplaptop.png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/assets/images/iphone.png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/assets/images/laptopdell.png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/assets/images/playstation.png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/assets/images/samsung.png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/assets/images/tv.png" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/flutter/bin/dart" beforeDir="false" afterPath="$PROJECT_DIR$/flutter/bin/dart" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/flutter/bin/flutter" beforeDir="false" afterPath="$PROJECT_DIR$/flutter/bin/flutter" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/flutter/bin/internal/update_dart_sdk.sh" beforeDir="false" afterPath="$PROJECT_DIR$/flutter/bin/internal/update_dart_sdk.sh" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/flutter/dev/bots/codelabs_build_test.sh" beforeDir="false" afterPath="$PROJECT_DIR$/flutter/dev/bots/codelabs_build_test.sh" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/flutter/dev/bots/docs.sh" beforeDir="false" afterPath="$PROJECT_DIR$/flutter/dev/bots/docs.sh" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/flutter/dev/customer_testing/ci.sh" beforeDir="false" afterPath="$PROJECT_DIR$/flutter/dev/customer_testing/ci.sh" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/flutter/dev/integration_tests/deferred_components_test/download_assets.sh" beforeDir="false" afterPath="$PROJECT_DIR$/flutter/dev/integration_tests/deferred_components_test/download_assets.sh" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/flutter/dev/integration_tests/deferred_components_test/run_release_test.sh" beforeDir="false" afterPath="$PROJECT_DIR$/flutter/dev/integration_tests/deferred_components_test/run_release_test.sh" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/flutter/dev/integration_tests/flutter_gallery/tool/run_instrumentation_test.sh" beforeDir="false" afterPath="$PROJECT_DIR$/flutter/dev/integration_tests/flutter_gallery/tool/run_instrumentation_test.sh" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/flutter/dev/integration_tests/ios_add2app_life_cycle/build_and_test.sh" beforeDir="false" afterPath="$PROJECT_DIR$/flutter/dev/integration_tests/ios_add2app_life_cycle/build_and_test.sh" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/flutter/dev/tools/gen_keycodes/bin/gen_keycodes" beforeDir="false" afterPath="$PROJECT_DIR$/flutter/dev/tools/gen_keycodes/bin/gen_keycodes" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/flutter/dev/tools/repackage_gradle_wrapper.sh" beforeDir="false" afterPath="$PROJECT_DIR$/flutter/dev/tools/repackage_gradle_wrapper.sh" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/flutter/packages/flutter_tools/bin/macos_assemble.sh" beforeDir="false" afterPath="$PROJECT_DIR$/flutter/packages/flutter_tools/bin/macos_assemble.sh" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/flutter/packages/flutter_tools/bin/tool_backend.sh" beforeDir="false" afterPath="$PROJECT_DIR$/flutter/packages/flutter_tools/bin/tool_backend.sh" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/flutter/packages/flutter_tools/bin/xcode_backend.sh" beforeDir="false" afterPath="$PROJECT_DIR$/flutter/packages/flutter_tools/bin/xcode_backend.sh" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/lib/models/device_model.dart" beforeDir="false" afterPath="$PROJECT_DIR$/lib/models/device_model.dart" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/lib/screens/add_device_screen.dart" beforeDir="false" afterPath="$PROJECT_DIR$/lib/screens/add_device_screen.dart" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/lib/screens/buyer_screen.dart" beforeDir="false" afterPath="$PROJECT_DIR$/lib/screens/buyer_screen.dart" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/lib/screens/device_detail_screen.dart" beforeDir="false" afterPath="$PROJECT_DIR$/lib/screens/device_detail_screen.dart" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/lib/screens/seller_screen.dart" beforeDir="false" afterPath="$PROJECT_DIR$/lib/screens/seller_screen.dart" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/pubspec.yaml" beforeDir="false" afterPath="$PROJECT_DIR$/pubspec.yaml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/replit.md" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/workspace.iml" beforeDir="false" afterPath="$PROJECT_DIR$/workspace.iml" afterDir="false" />
+    </list>
+    <option name="SHOW_DIALOG" value="false" />
+    <option name="HIGHLIGHT_CONFLICTS" value="true" />
+    <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
+    <option name="LAST_RESOLUTION" value="IGNORE" />
+  </component>
+  <component name="ClangdSettings">
+    <option name="formatViaClangd" value="false" />
+  </component>
   <component name="FileEditorManager">
     <leaf>
       <file leaf-file-name="main.dart" pinned="false" current-in-tab="true">
@@ -13,24 +69,72 @@
       </file>
     </leaf>
   </component>
-  <component name="ToolWindowManager">
-    <editor active="true" />
-    <layout>
-      <window_info id="Project" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" show_stripe_button="true" weight="0.25" sideWeight="0.5" order="0" side_tool="false" content_ui="combo" />
-    </layout>
+  <component name="Git.Settings">
+    <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
   </component>
+  <component name="ProjectColorInfo">{
+  &quot;associatedIndex&quot;: 4
+}</component>
+  <component name="ProjectId" id="352Fg3CgEq2VjgRSsSeqJ1m75v6" />
   <component name="ProjectView">
-    <navigator currentView="ProjectPane" proportions="" version="1">
-    </navigator>
+    <navigator currentView="ProjectPane" proportions="" version="1" />
     <panes>
       <pane id="ProjectPane">
         <option name="show-excluded-files" value="false" />
       </pane>
     </panes>
   </component>
-  <component name="PropertiesComponent">
-    <property name="last_opened_file_path" value="$PROJECT_DIR$" />
-    <property name="dart.analysis.tool.window.force.activate" value="true" />
-    <property name="show.migrate.to.gradle.popup" value="false" />
+  <component name="ProjectViewState">
+    <option name="hideEmptyMiddlePackages" value="true" />
+    <option name="showLibraryContents" value="true" />
+  </component>
+  <component name="PropertiesComponent">{
+  &quot;keyToString&quot;: {
+    &quot;ModuleVcsDetector.initialDetectionPerformed&quot;: &quot;true&quot;,
+    &quot;RunOnceActivity.ShowReadmeOnStart&quot;: &quot;true&quot;,
+    &quot;RunOnceActivity.TerminalTabsStorage.copyFrom.TerminalArrangementManager&quot;: &quot;true&quot;,
+    &quot;RunOnceActivity.cidr.known.project.marker&quot;: &quot;true&quot;,
+    &quot;RunOnceActivity.git.unshallow&quot;: &quot;true&quot;,
+    &quot;RunOnceActivity.readMode.enableVisualFormatting&quot;: &quot;true&quot;,
+    &quot;cf.first.check.clang-format&quot;: &quot;false&quot;,
+    &quot;cidr.known.project.marker&quot;: &quot;true&quot;,
+    &quot;dart.analysis.tool.window.visible&quot;: &quot;false&quot;,
+    &quot;git-widget-placeholder&quot;: &quot;main&quot;,
+    &quot;last_opened_file_path&quot;: &quot;C:/Users/User/Downloads/ReTechMarketplace&quot;,
+    &quot;settings.editor.selected.configurable&quot;: &quot;dart.settings&quot;,
+    &quot;show.migrate.to.gradle.popup&quot;: &quot;false&quot;
+  }
+}</component>
+  <component name="RecentsManager">
+    <key name="MoveFile.RECENT_KEYS">
+      <recent name="C:\Users\User\Downloads\ReTechMarketplace\assets\images" />
+    </key>
+  </component>
+  <component name="TaskManager">
+    <task active="true" id="Default" summary="Default task">
+      <changelist id="8ee04313-27f8-42f9-b1e1-98e21f147b0f" name="Changes" comment="" />
+      <created>1762300368157</created>
+      <option name="number" value="Default" />
+      <option name="presentableId" value="Default" />
+      <updated>1762300368157</updated>
+    </task>
+    <servers />
+  </component>
+  <component name="ToolWindowManager">
+    <editor active="true" />
+    <layout>
+      <window_info id="Project" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" show_stripe_button="true" weight="0.25" sideWeight="0.5" order="0" side_tool="false" content_ui="combo" />
+    </layout>
+  </component>
+  <component name="Vcs.Log.Tabs.Properties">
+    <option name="TAB_STATES">
+      <map>
+        <entry key="MAIN">
+          <value>
+            <State />
+          </value>
+        </entry>
+      </map>
+    </option>
   </component>
 </project>
